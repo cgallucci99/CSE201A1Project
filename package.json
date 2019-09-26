@@ -1,0 +1,23 @@
+{
+  "name": "cse201a1project",
+  "version": "1.0.0",
+  "description": "BookBot book catalog for CSE 201",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cgallucci99/CSE201A1Project.git"
+  },
+  "author": "Cam Gallucci",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/cgallucci99/CSE201A1Project/issues"
+  },
+  "homepage": "https://github.com/cgallucci99/CSE201A1Project#readme",
+  "dependencies": {
+    "ejs": "^2.7.1",
+    "express": "^4.17.1"
+  }
+}

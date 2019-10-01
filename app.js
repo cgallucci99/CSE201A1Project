@@ -36,14 +36,25 @@ con.connect(function(err) {
 
 app.set("view engine","ejs");
 
+con.connect(function(err) {
+  if (err) {
+    console.error('error connecting: ' + err.stack);
+    return;
+  }
+  console.log('connected as id ' + con.threadId);
+});
+
+// var query = con.query("SELECT * FROM books", function (err, result, fields) {
+//     if (err) throw err;
+// });
+
+// console.log("query values: \n" + query.values);
+
 app.get("/", function(req, res) {
-    con.connect(function(err) {
-        if (err) throw err;
-        con.query("SELECT * FROM books", function (err, result, fields) {
-          if (err) throw err;
-          res.render("index", {books: result});
-        });
-      });
+  con.query("SELECT * FROM books", function (err, result, fields) {
+    if (err) throw err;
+    res.render("index", {books: result});
+  });
 });
 
 var port = process.env.PORT || 3000;

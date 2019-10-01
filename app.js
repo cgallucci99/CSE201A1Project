@@ -24,22 +24,14 @@ con.connect(function(err) {
 con.connect(function(err) {
     if (err) throw err;
     console.log("Connected!");
-    var sql = "INSERT INTO books (title, author, publicationYear, synopsis, isbn) VALUES ('Harry Potter and the Sorcerer''s Stone', 'J.K. Rowling', 1997, 'Rescued from the outrageous neglect of his aunt and uncle, a young boy with a great destiny proves his worth while attending Hogwarts School for Witchcraft and Wizardry.', 9780439708180)";
+    var sql = "INSERT INTO books (title, author, publicationYear, synopsis, isbn) VALUES ('The Catcher In The Rye', 'J.D. Salinger', 1951, 'The novel details two days in the life of 16-year-old Holden Caulfield after he has been expelled from prep school. Confused and disillusioned, Holden searches for truth and rails against the “phoniness” of the adult world.', 9780316769532)";
     con.query(sql, function (err, result) {
       if (err) throw err;
       console.log("1 record inserted");
     });
   });
 */
-/*
-con.connect(function(err) {
-    if (err) throw err;
-    con.query("SELECT * FROM books", function (err, result, fields) {
-      if (err) throw err;
-      console.log(result);
-    });
-  });
-*/
+
 // web stuff
 
 app.set("view engine","ejs");

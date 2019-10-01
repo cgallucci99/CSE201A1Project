@@ -44,12 +44,6 @@ con.connect(function(err) {
   console.log('connected as id ' + con.threadId);
 });
 
-// var query = con.query("SELECT * FROM books", function (err, result, fields) {
-//     if (err) throw err;
-// });
-
-// console.log("query values: \n" + query.values);
-
 app.get("/", function(req, res) {
   con.query("SELECT * FROM books", function (err, result, fields) {
     if (err) throw err;

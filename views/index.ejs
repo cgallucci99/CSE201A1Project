@@ -19,8 +19,8 @@
         </button>
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <form class="form-inline mx-auto my-2 my-lg-0">
-                <div class="input-group mb-3">
+            <form class="form-inline mx-auto my-lg-0">
+                <div class="input-group my-1">
                     <input type="search" class="form-control" placeholder="Search" aria-label="Search">
                     <div class="input-group-append">
                         <button class="btn btn-outline-secondary" type="button">Search</button>
@@ -35,11 +35,33 @@
             </button>
         </div>
     </nav>
-    <% books.forEach( function(book) { %>
-    <h1><%= book.title %></h1>
-    <h2><%= book.author %></h2>
-    <h3><%= book.publicationYear %></h3>
-    <% }); %>
+    <div class="container-fluid mx-0 mt-5">
+        <% books.forEach( function(book) { %>
+        <div class="row">
+            <div class="col-sm-2"></div>
+            <div class="col-sm-7">
+                <div class="row">
+                    <div class="col-md-8">
+                        <h3><%= book.title %></h3>
+                    </div>
+                    <div class="col-md-2 col-6 pt-2">
+                        <p><%= book.author %></p>
+                    </div>
+                    <div class="col-md-2 col-6 pt-2">
+                        <p><%= book.publicationYear %></p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-1"></div>
+                    <div class="col-sm-11">
+                        <p><%= book.synopsis.substring(0, 150) + "..." %></p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-3"></div>
+        </div>
+        <% }); %>
+    </div>
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
         integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
         crossorigin="anonymous"></script>

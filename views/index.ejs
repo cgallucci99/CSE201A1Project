@@ -11,7 +11,7 @@
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top">
         <a class="navbar-brand" href="#">BookBot</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -19,7 +19,7 @@
         </button>
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <form class="form-inline mx-auto my-lg-0">
+            <form class="form-inline mx-auto my-lg-0 mb-1">
                 <div class="input-group my-1">
                     <input type="search" class="form-control" placeholder="Search" aria-label="Search">
                     <div class="input-group-append">
@@ -27,38 +27,48 @@
                     </div>
                 </div>
             </form>
-            <button class="btn btn-default mx-3">
+            <button class="btn btn-default mr-3">
                 Login
             </button>
-            <button class="btn btn-default mx-3">
+            <button class="btn btn-default float-right">
                 Sign Up
             </button>
         </div>
     </nav>
     <div class="container-fluid mx-0 mt-5">
         <% books.forEach( function(book) { %>
-        <div class="row">
+        <div class="row mb-4">
             <div class="col-sm-2"></div>
-            <div class="col-sm-7">
-                <div class="row">
-                    <div class="col-md-8">
-                        <h3><%= book.title %></h3>
-                    </div>
-                    <div class="col-md-2 col-6 pt-2">
-                        <p><%= book.author %></p>
-                    </div>
-                    <div class="col-md-2 col-6 pt-2">
-                        <p><%= book.publicationYear %></p>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-sm-1"></div>
-                    <div class="col-sm-11">
-                        <p><%= book.synopsis.substring(0, 150) + "..." %></p>
+            <div class="col-sm-8">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-7">
+                                <h3><%= book.title %></h3>
+                            </div>
+                            <div class="col-md-2 col-4 pt-2">
+                                <p><%= book.author %></p>
+                            </div>
+                            <div class="col-md-1 col-4 pt-2">
+                                <p><%= book.publicationYear %></p>
+                            </div>
+                            <div class="col-md-2 col-4">
+                                <button class="btn btn-primary">
+                                    Add to List
+                                </button>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-1"></div>
+                            <div class="col-sm-10">
+                                <p><%= book.synopsis.substring(0, 200) + "..." %></p>
+                            </div>
+                            <div class="col-sm-1"></div>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="col-sm-3"></div>
+            <div class="col-sm-2"></div>
         </div>
         <% }); %>
     </div>

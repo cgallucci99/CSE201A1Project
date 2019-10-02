@@ -1,5 +1,11 @@
 var express = require("express");
 var app = express();
+var bodyParser = require("body-parser");
+
+app.use(bodyParser.urlencoded({
+  extended: true
+}));
+
 // mysql stuff
 var mysql = require('mysql');
 
@@ -7,8 +13,7 @@ var con = mysql.createConnection({
     host: "muowdopceqgxjn2b.cbetxkdyhwsb.us-east-1.rds.amazonaws.com",
     user: "nrx5dsvyg9fs4zmu",
     password: "t3pwyf6nng31h2wv",
-    database: "fu4kgguc9oe481fn",
-    multipleStatements: true
+    database: "fu4kgguc9oe481fn"
 });
 
 con.connect(function(err) {
@@ -63,10 +68,20 @@ con.connect(function(err) {
 app.set("view engine","ejs");
 
 app.get("/", function(req, res) {
-  con.query("SELECT * FROM books", function (err, result, fields) {
-    if (err) throw err;
-    res.render("index", {books: result});
+  res.redirect("/home/isbn");
+});
+
+app.get("/home/:order", function(req, res) {
+  con.query("SELECT * FROM books ORDER BY ??", req.params.order, function (err, result, fields) {
+    if (err)
+      res.send("Error 404: Page Not Found");
+    else
+      res.render("index", {books: result});
   });
+});
+
+app.get("*", function(req, res) {
+  res.send("Error 404: Page not found");
 });
 
 var port = process.env.PORT || 3000;

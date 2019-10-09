@@ -85,7 +85,7 @@ app.get("/login", function(req, res) {
 });
 
 app.get("*", function(req, res) {
-  res.send("Error 404: Page not found");
+  res.status(404).render("not-found");
 });
 
 var port = process.env.PORT || 3000;

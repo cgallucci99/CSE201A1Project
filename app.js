@@ -80,6 +80,10 @@ app.get("/home/:order", function(req, res) {
   });
 });
 
+app.get("/login", function(req, res) {
+  res.render("login");
+});
+
 app.get("*", function(req, res) {
   res.send("Error 404: Page not found");
 });

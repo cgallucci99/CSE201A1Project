@@ -1,5 +1,6 @@
 var db = require('../models');
 var passport = require('../config/passport');
+var Sequelize = require('sequelize');
 
 module.exports = function (app) {
     app.post("/api/login", passport.authenticate('local'), function (req, res) {
@@ -15,6 +16,8 @@ module.exports = function (app) {
             lastName: req.body.lastName
         }).then(function () {
             res.redirect(307, "/api/login");
+        }).catch(Sequelize.ValidationError, function(err) {
+            res.send('must be valid email');
         }).catch(function (err) {
             console.log(err);
             res.json(err);

@@ -19,9 +19,13 @@
                     <div class="row">
                         <div>
                             <strong>Sign Up</strong>
-                            <form action="/api/signup" method="POST">
+                            <form action="/api/signup" method="POST" onsubmit="return check();">
                                 <div class="form-group">
-                                    <input class="form-control" required type="text" name="email" placeholder="Email">
+                                    <input class="form-control" required type="text" name="email"
+                                        onchange="checkEmail();" id="email" placeholder="Email">
+                                    <small id="emailHelpBlock" style="display: none;" class="form-text text-danger">
+                                        Incorrect email format
+                                    </small>
                                 </div>
                                 <div class="form-group">
                                     <input class="form-control" required type="text" name="firstName"
@@ -33,14 +37,16 @@
                                 </div>
                                 <div class="form-group">
                                     <input class="form-control" required type="password" name="password"
-                                        placeholder="Password" id="password" onkeyup="check_pass();">
+                                        placeholder="Password" id="password">
                                 </div>
                                 <div class="form-group">
                                     <input class="form-control" required type="password" id="confirm_password"
                                         placeholder="Confirm Password" onkeyup="check_pass();">
-                                    <p id="message"></p>
+                                    <small id="passwordHelpBlock" style="display: none;" class="form-text text-danger">
+                                        Passwords do not match
+                                    </small>
                                 </div>
-                                <button type="submit" class="btn btn-default" id="submit" disabled>Submit</button>
+                                <button type="submit" class="btn btn-default" onmouseover="check();" id="submit">Submit</button>
                             </form>
                         </div>
                     </div>
@@ -53,9 +59,30 @@
     function check_pass() {
         if (document.getElementById('password').value ==
             document.getElementById('confirm_password').value) {
-            document.getElementById('submit').disabled = false;
+            document.getElementById('passwordHelpBlock').style = 'display: none;';
+            return true;
         } else {
-            document.getElementById('submit').disabled = true;
+            document.getElementById('passwordHelpBlock').style = 'display: block;';
+            return false;
+        }
+    }
+    function emailIsValid(email) {
+        return /\S+@\S+\.\S+/.test(email)
+    }
+    function checkEmail() {
+        if (emailIsValid(document.getElementById('email').value)) {
+            document.getElementById('emailHelpBlock').style = 'display: none;';
+            return true;
+        } else {
+            document.getElementById('emailHelpBlock').style = 'display: block;';
+            return false;
+        }
+    }
+    function check() {
+        if (checkEmail() && check_pass()) {
+            return true;
+        } else {
+            return false;
         }
     }
 </script>

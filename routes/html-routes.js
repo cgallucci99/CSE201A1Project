@@ -7,9 +7,10 @@ module.exports = function (app) {
     });
 
     app.get("/home/:order", function (req, res) {
+        console.log(req.user);
         db.Book.findAll({
             order: sequelize.col(req.params.order)
-        }).then(books => res.render('index', {books: books})).catch(function(err) {
+        }).then(books => res.render('index', {books: books, user: req.user})).catch(function(err) {
             res.render('not-found');
         });
         // con.query("SELECT * FROM books ORDER BY ??", req.params.order, function (err, result, fields) {
@@ -21,10 +22,19 @@ module.exports = function (app) {
     });
 
     app.get("/login", function (req, res) {
-        res.render("login");
+        if (req.user) {
+            res.redirect("/");
+        } else {
+            res.render("login", {user: req.user});
+        }
     });
 
-    app.get("*", function (req, res) {
-        res.status(404).render("not-found");
+    app.get("/signup", function (req, res) {
+        if (req.user) {
+            res.redirect("/");
+        } else {
+            res.render("signup", {user: req.user});
+        } 
     });
+
 }

@@ -2,14 +2,14 @@ var express = require("express");
 var session = require("express-session");
 var app = express();
 var bodyParser = require("body-parser");
+var db = require("./models");
+var passport = require('./config/passport');
 
 app.use(bodyParser.urlencoded({
   extended: true
 }));
 app.use(bodyParser.json());
 app.use(express.static("public"));
-
-var db = require("./models");
 
 app.use(session({ 
   secret: "BookBotReadmeInc", 
@@ -20,10 +20,12 @@ app.use(session({
   }
 }));
 // web stuff
-
+app.use(passport.initialize());
+app.use(passport.session());
 app.set("view engine","ejs");
 
 require("./routes/html-routes.js")(app);
+require("./routes/api-routes")(app);
 
 var port = process.env.PORT || 3000;
 

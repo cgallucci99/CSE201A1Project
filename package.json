@@ -19,6 +19,9 @@
   "homepage": "https://github.com/cgallucci99/CSE201A1Project#readme",
   "dependencies": {
     "bcryptjs": "^2.4.3",
+    "chai": "^4.2.0",
+    "chai-webdriver": "^1.2.0",
+    "chromedriver": "^77.0.0",
     "ejs": "^2.7.1",
     "express": "^4.17.1",
     "express-session": "^1.17.0",
@@ -28,6 +31,7 @@
     "nodemon": "^1.19.3",
     "passport": "^0.4.0",
     "passport-local": "^1.0.0",
+    "selenium-webdriver": "^4.0.0-alpha.5",
     "sequelize": "^5.19.6"
   }
 }

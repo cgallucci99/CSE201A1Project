@@ -47,28 +47,3 @@ describe('User', function() {
 });
 
 // Tests for Books
-describe('Book', function() {
-  describe('#createBook()', function() {
-    it('should have book with correct attributes', function() {
-      db.Book.destroy({
-        where: {
-          synopsis: 'test'
-        }
-      });
-      db.Book.create({
-        title: 'Harry Potter And The Goblet Of Fire',
-        author: 'J.K. Rowling',
-        publicationYear: 2006,
-        synopsis: 'test',
-        isbn: 123456789
-      }).then(book => {
-        assert.equal(book.author, 'J.K. Rowling');
-        assert.equal(book.title, 'Harry Potter And The Goblet Of Fire');
-        assert.equal(book.publicationYear, 2006);
-        assert.equal(book.synopsis, 'test')
-        assert.notEqual(book.synopsis, 'test1');
-        assert.equal(book.isbn, 123456789);
-      });
-    });
-  });
-});

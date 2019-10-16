@@ -4,6 +4,7 @@
     "password": "t3pwyf6nng31h2wv",
     "database": "fu4kgguc9oe481fn",
     "host": "muowdopceqgxjn2b.cbetxkdyhwsb.us-east-1.rds.amazonaws.com",
-    "dialect": "mysql"
+    "dialect": "mysql",
+    "logging": false
   }
 }

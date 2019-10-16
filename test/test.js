@@ -1,6 +1,8 @@
 var assert = require('assert');
 var sequelize = require('sequelize');
 var db = require("../models");
+const {Builder, By, Key, until } = require('selenium-webdriver');
+const { expect } = require('chai');
 
 // Test User class
 
@@ -70,5 +72,32 @@ describe('Book', function() {
         assert.equal(book.isbn, 123456789);
       });
     });
+  });
+});
+
+// Test web pages
+
+describe('DefaultTest', function() {
+  const driver = new Builder().forBrowser('chrome').build();
+  describe('#index', function() {
+    it('should go to index page and check that the title is BookBot', async function() {
+      await driver.get('localhost:3000');
+      const title = await driver.getTitle();
+  
+      expect(title).to.equal('BookBot');
+    });
+  });
+
+  describe('#signup', function() {
+    it('should go to sign up page and enter an invalid email format and check that error message appears', async function() {
+      await driver.get('localhost:3000/signup');
+      await driver.findElement(By.name('email')).sendKeys('invalid@email', Key.ENTER);
+      const style = await driver.findElement(By.id('emailHelpBlock')).getAttribute('style');
+      expect(style).to.equal('display: block;');
+    })
+  })
+
+  after(async function() {
+    driver.quit();
   });
 });

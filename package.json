@@ -20,7 +20,6 @@
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "chai": "^4.2.0",
-    "chai-webdriver": "^1.2.0",
     "chromedriver": "^77.0.0",
     "ejs": "^2.7.1",
     "express": "^4.17.1",

@@ -4,7 +4,7 @@
   "description": "BookBot book catalog for CSE 201",
   "main": "app.js",
   "scripts": {
-    "test": "mocha",
+    "test": "node ./node_modules/mocha/bin/_mocha",
     "start": "node app.js"
   },
   "repository": {

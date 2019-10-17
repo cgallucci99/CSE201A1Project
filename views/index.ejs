@@ -12,6 +12,19 @@
 
 <% include ./partials/header.ejs %>
     <div class="container-fluid mx-0 mt-3">
+        <% if(user) { %>
+            <div class="row mb-3 mr-3">
+                <div class="col-md-4"></div>
+                <div class="col-md-4">
+                    <div class="alert alert-success" role="alert">
+                        <span id="message">Welcome, <%= user.firstName %></span>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </div>
+                </div>
+                <div class="col-md-4"></div>
+            </div>
+        <% } %>
         <div class="row mb-3 mr-3">
             <div class="col-8"></div>
             <div class="col-4">

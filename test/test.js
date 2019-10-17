@@ -91,6 +91,8 @@ describe('DefaultBrowserTest', function () {
   const driver = new Builder().forBrowser('chrome').build();
   describe('#index', function () {
     it('should go to index page and check that the title is BookBot', async function () {
+      // make sure window is maximized to test regular display rather than mobile
+      await driver.manage().window().maximize();
       await driver.get('localhost:3000');
       const title = await driver.getTitle();
 
@@ -124,8 +126,8 @@ describe('DefaultBrowserTest', function () {
       await driver.get('localhost:3000/login');
       await driver.findElement(By.name('email')).sendKeys('test2@user.com', Key.ENTER);
       await driver.findElement(By.name('password')).sendKeys('password', Key.ENTER);
-      // amake sure window is maximized to test regular display rather than mobile
-      await driver.manage().window().maximize();
+      var flash = await driver.findElement(By.id('message')).getText();
+      expect(flash).to.equal('Welcome, test2');
       var button = await driver.findElement(By.id('logout')).isDisplayed();
       expect(button).to.be.true;
       await driver.findElement(By.id('logout')).click();

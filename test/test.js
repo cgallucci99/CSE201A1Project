@@ -48,66 +48,93 @@ describe('User', function () {
   });
 });
 
-  // Tests for Books
-  describe('Book', function () {
-    describe('#createBook()', function () {
-      it('should have book with correct attributes', async function () {
+// Tests for Books
+describe('Book', function () {
+  describe('#createBook()', function () {
+    it('should have book with correct attributes', async function () {
 
-        await db.Book.create({
-          title: 'Harry Potter And The Goblet Of Fire',
-          author: 'J.K. Rowling',
-          publicationYear: 2006,
-          synopsis: 'test',
-          isbn: 123456789
-        }).catch(function (err) {
-          console.log(err);
-        });
+      await db.Book.create({
+        title: 'Harry Potter And The Goblet Of Fire',
+        author: 'J.K. Rowling',
+        publicationYear: 2006,
+        synopsis: 'test',
+        isbn: 123456789
+      }).catch(function (err) {
+        console.log(err);
+      });
 
 
-        const book = await db.Book.findOne({
-          where: {
-            synopsis: 'test'
-          }
-        });
-        expect(book.author).to.equal('J.K. Rowling');
-        assert.equal(book.title, 'Harry Potter And The Goblet Of Fire');
-        assert.equal(book.publicationYear, 2006);
-        assert.equal(book.synopsis, 'test')
-        assert.notEqual(book.synopsis, 'test1');
-        assert.equal(book.isbn, 123456789);
-        // remove test book so it doesn't appear on the database
-        await db.Book.destroy({
-          where: {
-            synopsis: 'test'
-          }
-        });
+      const book = await db.Book.findOne({
+        where: {
+          synopsis: 'test'
+        }
+      });
+      expect(book.author).to.equal('J.K. Rowling');
+      assert.equal(book.title, 'Harry Potter And The Goblet Of Fire');
+      assert.equal(book.publicationYear, 2006);
+      assert.equal(book.synopsis, 'test')
+      assert.notEqual(book.synopsis, 'test1');
+      assert.equal(book.isbn, 123456789);
+      // remove test book so it doesn't appear on the database
+      await db.Book.destroy({
+        where: {
+          synopsis: 'test'
+        }
       });
     });
   });
+});
 
-  // Test web pages
+// Test web pages
 
-  describe('DefaultBrowserTest', function () {
-    const driver = new Builder().forBrowser('chrome').build();
-    describe('#index', function () {
-      it('should go to index page and check that the title is BookBot', async function () {
-        await driver.get('localhost:3000');
-        const title = await driver.getTitle();
+describe('DefaultBrowserTest', function () {
+  const driver = new Builder().forBrowser('chrome').build();
+  describe('#index', function () {
+    it('should go to index page and check that the title is BookBot', async function () {
+      await driver.get('localhost:3000');
+      const title = await driver.getTitle();
 
-        expect(title).to.equal('BookBot');
-      });
-    });
-
-    describe('#signup', function () {
-      it('should go to sign up page and enter an invalid email format and check that error message appears', async function () {
-        await driver.get('localhost:3000/signup');
-        await driver.findElement(By.name('email')).sendKeys('invalid@email', Key.ENTER);
-        const style = await driver.findElement(By.id('emailHelpBlock')).getAttribute('style');
-        expect(style).to.equal('display: block;');
-      })
-    })
-
-    after(async function () {
-      driver.quit();
+      expect(title).to.equal('BookBot');
     });
   });
+
+  describe('#signup', function () {
+    it('should go to sign up page and enter an invalid email format and check that error message appears', async function () {
+      await driver.get('localhost:3000/signup');
+      await driver.findElement(By.name('email')).sendKeys('invalid@email', Key.ENTER);
+      const style = await driver.findElement(By.id('emailHelpBlock')).getAttribute('style');
+      expect(style).to.equal('display: block;');
+    });
+  });
+  describe('#loginFail', function () {
+    it('should try to login with nonexistent email, fail, try to login with invalid password, fail, try to log in with valid credentials and succeed', async function() {
+      await driver.get('localhost:3000/login');
+      await driver.findElement(By.name('email')).sendKeys('invalid', Key.ENTER);
+      await driver.findElement(By.name('password')).sendKeys('invalid', Key.ENTER);
+      var message = await driver.findElement(By.id('message')).getText();
+      expect(message).to.equal('Incorrect email.');
+      await driver.findElement(By.name('email')).sendKeys('test@user.com', Key.ENTER);
+      await driver.findElement(By.name('password')).sendKeys('invalid', Key.ENTER);
+      message = await driver.findElement(By.id('message')).getText();
+      expect(message).to.equal('Incorrect password.');
+    });
+  });
+  describe('#loginSucceedAndLogout', function () {
+    it('should try to login and succeed, then logout', async function() {
+      await driver.get('localhost:3000/login');
+      await driver.findElement(By.name('email')).sendKeys('test2@user.com', Key.ENTER);
+      await driver.findElement(By.name('password')).sendKeys('password', Key.ENTER);
+      // amake sure window is maximized to test regular display rather than mobile
+      await driver.manage().window().maximize();
+      var button = await driver.findElement(By.id('logout')).isDisplayed();
+      expect(button).to.be.true;
+      await driver.findElement(By.id('logout')).click();
+      button = await driver.findElement(By.id('login')).isDisplayed();
+      expect(button).to.be.true;
+    });
+  });
+
+  after(async function () {
+    driver.quit();
+  });
+});

@@ -7,7 +7,6 @@ module.exports = function (app) {
     });
 
     app.get("/home/:order", function (req, res) {
-        console.log(req.user);
         db.Book.findAll({
             order: sequelize.col(req.params.order)
         }).then(books => res.render('index', {books: books, user: req.user})).catch(function(err) {
@@ -25,7 +24,7 @@ module.exports = function (app) {
         if (req.user) {
             res.redirect("/");
         } else {
-            res.render("login", {user: req.user});
+            res.render("login", {user: req.user, message: req.flash('error')});
         }
     });
 

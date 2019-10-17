@@ -3,9 +3,11 @@ var passport = require('../config/passport');
 var Sequelize = require('sequelize');
 
 module.exports = function (app) {
-    app.post("/api/login", passport.authenticate('local'), function (req, res) {
-        res.redirect('/');
-    });
+    app.post("/api/login", passport.authenticate('local', {
+        successRedirect: '/',
+        failureRedirect: '/login',
+        failureFlash: true
+    }));
 
     app.post("/api/signup", function (req, res) {
         console.log(req.body);

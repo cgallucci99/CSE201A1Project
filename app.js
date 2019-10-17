@@ -4,6 +4,7 @@ var app = express();
 var bodyParser = require("body-parser");
 var db = require("./models");
 var passport = require('./config/passport');
+var flash = require('connect-flash');
 
 app.use(bodyParser.urlencoded({
   extended: true
@@ -23,7 +24,7 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 app.set("view engine","ejs");
-
+app.use(flash());
 require("./routes/html-routes.js")(app);
 require("./routes/api-routes")(app);
 

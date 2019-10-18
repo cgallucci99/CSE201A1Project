@@ -88,6 +88,7 @@ describe('Book', function () {
 // Test web pages
 
 describe('DefaultBrowserTest', function () {
+  this.timeout(20000);
   const driver = new Builder().forBrowser('chrome').build();
   describe('#index', function () {
     it('should go to index page and check that the title is BookBot', async function () {

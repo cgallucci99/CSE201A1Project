@@ -6,6 +6,7 @@ module.exports = function (app) {
     app.post("/api/login", passport.authenticate('local', {
         successRedirect: '/',
         failureRedirect: '/login',
+        successFlash: 'Welcome, ',
         failureFlash: true
     }));
 

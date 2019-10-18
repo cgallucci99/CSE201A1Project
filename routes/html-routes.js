@@ -9,7 +9,7 @@ module.exports = function (app) {
     app.get("/home/:order", function (req, res) {
         db.Book.findAll({
             order: sequelize.col(req.params.order)
-        }).then(books => res.render('index', {books: books, user: req.user})).catch(function(err) {
+        }).then(books => res.render('index', {books: books, user: req.user, message: req.flash('success')})).catch(function(err) {
             res.render('not-found');
         });
         // con.query("SELECT * FROM books ORDER BY ??", req.params.order, function (err, result, fields) {

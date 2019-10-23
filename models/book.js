@@ -40,5 +40,9 @@ module.exports = function(sequelize, DataTypes) {
         timestamps: false
     }
     );
+    Book.associate = (models) => {
+        Book.belongsToMany(models.User, { as: 'User', through: models.UsersBookList, foreignKey: 'id'});
+    }
+
     return Book;
 }

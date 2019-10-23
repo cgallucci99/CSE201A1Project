@@ -10,6 +10,28 @@ module.exports = function (app) {
         failureFlash: true
     }));
 
+    app.post("/api/:userid/:isbn", function(req, res) {
+        db.User.findOne({
+            where: {
+                id: req.params.userid
+            }
+        }).then(function(user) {
+            db.Book.findOne({
+                where: {
+                    isbn: req.params.isbn
+                }
+            }).then(function (book) {
+                user.addBook(book);
+            }).catch(function (error) {
+                console.log(error);
+            });
+        }).then(function () {
+            res.redirect('/');
+        }).catch(function (err) {
+            console.log(err);
+        })
+    });
+
     app.post("/api/signup", function (req, res) {
         console.log(req.body);
         db.User.create({

@@ -7,24 +7,11 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
         integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <title>BookBot</title>
+    <title>MyCatalogue</title>
 </head>
 
 <% include ./partials/header.ejs %>
-    <div class="container-fluid mx-0 mt-3">
-        <% if(message.length > 0) { %>
-            <div class="row mb-3 mr-3">
-                <div class="col-md-4"></div>
-                <div class="col-md-4">
-                    <div class="alert alert-success" role="alert">
-                        <span id="message"> <%= message %><%= user.firstName %></span>
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </div>
-                </div>
-                <div class="col-md-4"></div>
-            </div>
-        <% } %>
+<div class="container-fluid mx-0 mt-3">
         <div class="row mb-3 mr-3">
             <div class="col-8"></div>
             <div class="col-4">

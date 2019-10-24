@@ -32,7 +32,9 @@ passport.use(new LocalStrategy(
                 });
             }
             // If none of the above, return the user
-            return done(null, dbUser);
+            return done(null, dbUser, {
+                message: "Welcome, " + dbUser.firstName
+            });
         });
     }
 ));

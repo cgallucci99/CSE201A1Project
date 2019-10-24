@@ -6,7 +6,7 @@ module.exports = function (app) {
     app.post("/api/login", passport.authenticate('local', {
         successRedirect: '/',
         failureRedirect: '/login',
-        successFlash: 'Welcome, ',
+        successFlash: true,
         failureFlash: true
     }));
 
@@ -26,7 +26,8 @@ module.exports = function (app) {
                 console.log(error);
             });
         }).then(function () {
-            res.redirect('/');
+            req.flash('success', 'Successfully added to MyCatalogue')
+            res.redirect('back');
         }).catch(function (err) {
             console.log(err);
         })

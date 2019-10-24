@@ -61,7 +61,7 @@
                             </div>
                             <div class="col-md-2 col-4">
                                 <% if (user) { %>
-                                <form action="/api/<%=user.id%>/<%=book.isbn%>" method="POST">
+                                <form action="/api/addToCatalogue/<%=user.id%>/<%=book.isbn%>" method="POST">
                                     <button class="btn btn-primary">
                                             Add to List
                                         </button>

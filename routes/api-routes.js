@@ -10,7 +10,7 @@ module.exports = function (app) {
         failureFlash: true
     }));
 
-    app.post("/api/:userid/:isbn", async function(req, res) {
+    app.post("/api/addToCatalogue/:userid/:isbn", async function(req, res) {
         var user = await db.User.findOne({
             where: {
                 id : req.params.userid
@@ -45,6 +45,10 @@ module.exports = function (app) {
         // }).catch(function (err) {
         //     console.log(err);
         // })
+    });
+
+    app.post("/api/removeFromCatalogue/:userid/:isbn", function(req,res) {
+
     });
 
     app.post("/api/signup", function (req, res) {

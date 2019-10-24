@@ -1,21 +1,18 @@
 module.exports = function(sequelize, DataTypes) {
     var UsersBookList = sequelize.define("UsersBookList", {
-        listID: {
-            type: DataTypes.INTEGER,
-            primaryKey: true,
-            autoIncrement: true
-        },
       id: {
         type: DataTypes.INTEGER,
+        primaryKey: true,
         references: {
           model: 'User',
-          key: 'if'
+          key: 'id'
         },
         onDelete: 'cascade',
         onUpdate: 'cascade',
       },
       isbn: {
         type: DataTypes.BIGINT,
+        primaryKey: true,
         references: {
           model: 'Book',
           key: 'isbn'

@@ -41,7 +41,7 @@ module.exports = function(sequelize, DataTypes) {
     }
     );
     Book.associate = (models) => {
-        Book.belongsToMany(models.User, { as: 'User', through: models.UsersBookList, foreignKey: 'id'});
+        Book.belongsToMany(models.User, { as: 'User', through: models.UsersBookList, foreignKey: 'isbn'});
     }
 
     return Book;

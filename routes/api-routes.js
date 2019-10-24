@@ -10,27 +10,41 @@ module.exports = function (app) {
         failureFlash: true
     }));
 
-    app.post("/api/:userid/:isbn", function(req, res) {
-        db.User.findOne({
+    app.post("/api/:userid/:isbn", async function(req, res) {
+        var user = await db.User.findOne({
             where: {
-                id: req.params.userid
+                id : req.params.userid
             }
-        }).then(function(user) {
-            db.Book.findOne({
-                where: {
-                    isbn: req.params.isbn
-                }
-            }).then(function (book) {
-                user.addBook(book);
-            }).catch(function (error) {
-                console.log(error);
-            });
-        }).then(function () {
-            req.flash('success', 'Successfully added to MyCatalogue')
-            res.redirect('back');
-        }).catch(function (err) {
-            console.log(err);
-        })
+        });
+        var book = await db.Book.findOne({
+            where: {
+                isbn: req.params.isbn
+            }
+        });
+        user.addBook(book);
+        req.flash('success', 'Successfully added "' + book.title + '" to MyCatalogue');
+        res.redirect('back');
+
+        // db.User.findOne({
+        //     where: {
+        //         id: req.params.userid
+        //     }
+        // }).then(function(user) {
+        //     db.Book.findOne({
+        //         where: {
+        //             isbn: req.params.isbn
+        //         }
+        //     }).then(function (book) {
+        //         user.addBook(book);
+        //     }).catch(function (error) {
+        //         console.log(error);
+        //     });
+        // }).then(function () {
+        //     req.flash('success', 'Successfully added to MyCatalogue')
+        //     res.redirect('back');
+        // }).catch(function (err) {
+        //     console.log(err);
+        // })
     });
 
     app.post("/api/signup", function (req, res) {

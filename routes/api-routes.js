@@ -75,6 +75,7 @@ module.exports = function (app) {
     });
 
     app.get("*", function (req, res) {
-        res.status(404).render("not-found", {user: req.user});
+        res.render("not-found", {user: req.user});
+        // res.status(404).render("not-found", {user: req.user});
     });
 }

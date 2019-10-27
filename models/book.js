@@ -34,6 +34,9 @@ module.exports = function(sequelize, DataTypes) {
       isbn: {
           type: DataTypes.BIGINT,
           primaryKey: true
+      },
+      cover: {
+          type: DataTypes.STRING
       }
     },
     {

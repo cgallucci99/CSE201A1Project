@@ -27,7 +27,8 @@ module.exports = function (app) {
         db.Book.findAll({
             order: sequelize.col(req.params.order)
         }).then(books => res.render('index', {books: books, user: req.user, message: req.flash('success')})).catch(function(err) {
-            res.render('not-found');
+            console.log(err);
+            res.render('not-found', {user: req.user});
         });
         // con.query("SELECT * FROM books ORDER BY ??", req.params.order, function (err, result, fields) {
         //     if (err)

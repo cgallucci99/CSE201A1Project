@@ -17,26 +17,26 @@ module.exports = function (app) {
                 }
             }]
         }).then(function (books) {
-            res.render('mycatalogue', {books: books, user: req.user});
+            res.render('mycatalogue', {books: books, user: req.user, successMessage: req.flash('success'), errorMessage: req.flash('error')});
         }).catch(function (err) {
             console.log(err);
         });
     });
 
-    app.get("/book/:isbn", function(req, res) {
-        db.Book.findOne({
-            where: {
-                isbn: req.params.isbn
-            }
-        }).then( function(book) {
-            res.render('book', {user: req.user, book: book});
-        })
-    });
+    // app.get("/book/:isbn", function(req, res) {
+    //     db.Book.findOne({
+    //         where: {
+    //             isbn: req.params.isbn
+    //         }
+    //     }).then( function(book) {
+    //         res.render('book', {user: req.user, book: book});
+    //     })
+    // });
 
     app.get("/home/:order", function (req, res) {
         db.Book.findAll({
             order: sequelize.col(req.params.order)
-        }).then(books => res.render('index', {books: books, user: req.user, message: req.flash('success')})).catch(function(err) {
+        }).then(books => res.render('index', {books: books, user: req.user, successMessage: req.flash('success'), errorMessage: req.flash('error')})).catch(function(err) {
             console.log(err);
             res.render('not-found', {user: req.user});
         });
@@ -52,7 +52,7 @@ module.exports = function (app) {
         if (req.user) {
             res.redirect("/");
         } else {
-            res.render("login", {user: req.user, message: req.flash('error')});
+            res.render("login", {user: req.user, successMessage: req.flash('success'), errorMessage: req.flash('error')});
         }
     });
 
@@ -60,7 +60,7 @@ module.exports = function (app) {
         if (req.user) {
             res.redirect("/");
         } else {
-            res.render("signup", {user: req.user});
+            res.render("signup", {user: req.user, successMessage: req.flash('success'), errorMessage: req.flash('error')});
         } 
     });
 

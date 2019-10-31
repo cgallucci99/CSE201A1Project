@@ -12,19 +12,7 @@
 
 <% include ./partials/header.ejs %>
     <div class="container-fluid mx-0 mt-3">
-        <% if(message.length > 0) { %>
-            <div class="row mb-3 mr-3">
-                <div class="col-md-4"></div>
-                <div class="col-md-4">
-                    <div class="alert alert-success" role="alert">
-                        <span id="message"> <%= message %></span>
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </div>
-                </div>
-                <div class="col-md-4"></div>
-            </div>
-        <% } %>
+        <% include ./partials/message.ejs %>
         <div class="row mb-3 mr-3">
             <div class="col-8"></div>
             <div class="col-4">

@@ -11,12 +11,14 @@
 </head>
 
 <% include ./partials/header.ejs %>
-<div class="container-fluid" style="display: flex; justify-content: center; align-items: center; height: 50vh">
+<div class="container-fluid mt-3">
+    <% include ./partials/message.ejs %>
     <div class="row">
-        <div class="col">
+        <div class="col-md-4"></div>
+        <div class="col-md-4">
             <div class="card text-center">
                 <div class="card-body">
-                    <div class="row">
+                    <!-- <div class="row"> -->
                         <div>
                             <strong>Sign Up</strong>
                             <form action="/api/signup" method="POST" onsubmit="return check();">
@@ -45,25 +47,33 @@
                                     <small id="passwordHelpBlock" style="display: none;" class="form-text text-danger">
                                         Passwords do not match
                                     </small>
+                                    <small id="passwordLengthHelpBlock" style="display: none;" class="form-text text-danger">
+                                            Password must be 8 characters
+                                    </small>
                                 </div>
                                 <button type="submit" class="btn btn-default" onmouseover="check();" id="submit">Submit</button>
                             </form>
                         </div>
-                    </div>
+                    <!-- </div> -->
                 </div>
             </div>
         </div>
+        <div class="col-md-4"></div>
     </div>
 </div>
 <script>
     function check_pass() {
         if (document.getElementById('password').value ==
-            document.getElementById('confirm_password').value) {
+            document.getElementById('confirm_password').value && document.getElementById('password').value.length >= 8) {
             document.getElementById('passwordHelpBlock').style = 'display: none;';
+            document.getElementById('passwordLengthHelpBlock').style = 'display: none;';
             return true;
+        } else if(document.getElementById('password').value.length < 8) {
+            document.getElementById('passwordLengthHelpBlock').style = 'display: block;';
+            return false;
         } else {
             document.getElementById('passwordHelpBlock').style = 'display: block;';
-            return false;
+            return false
         }
     }
     function emailIsValid(email) {

@@ -12,37 +12,26 @@
 
 <% include ./partials/header.ejs %>
 <div class="container-fluid mx-0 mt-3">
-    <div class="row mb-3 mr-3">
-        <div class="col-8"></div>
-        <div class="col-4">
-            <div class="dropdown">
-                <button class="btn btn-secondary dropdown-toggle" type="button" id="Sort" data-toggle="dropdown"
-                    aria-haspopup="true" aria-expanded="false">
-                    Sort Books
-                </button>
-                <div class="dropdown-menu" aria-labelledby="Sort">
-                    <a class="dropdown-item" href="/home/title">Title</a>
-                    <a class="dropdown-item" href="/home/author">Author</a>
-                    <a class="dropdown-item" href="/home/genre1">Genre</a>
-                    <a class="dropdown-item" href="/home/publicationYear">Publication Year</a>
-                    <a class="dropdown-item" href="/home/isbn">ISBN</a>
-                </div>
-            </div>
-        </div>
-    </div>
+    <% include ./partials/message.ejs %>
+    
     <div class="row mt-4 mb-4" style="margin-left:5%; margin-right: 5%;">
     <% books.forEach( function(book) { %>
     <% var cover = "http://via.placeholder.com/200x320"; %>
     <% if (book.cover) { %>
         <% cover = book.cover; %>
     <% } %>
-        <div class="col-xl-3 col-lg-4 col-md-6">
+        <div class="col-xl-3 col-lg-4 col-md-6 d-flex align-items-stretch">
             <div class="card mb-4">
                 <img class="card-img-top" src="<%= cover %>" alt="<%= book.title %> cover">
                 <div class="card-body">
                     <h5 class="card-title"><%= book.title %></h5>
                     <p class="card-text"><%= book.synopsis.substring(0, 200) + "..." %></p>
                     <a href="/book/<%= book.isbn %>" class="btn btn-primary">View book</a>
+                    <form action="/api/removeFromCatalogue/<%=user.id%>/<%=book.isbn%>" method="POST" class="d-inline float-right">
+                        <button class="btn btn-primary">
+                                Remove from List
+                            </button>
+                    </form>
                 </div>
             </div>
         </div>

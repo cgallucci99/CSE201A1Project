@@ -23,15 +23,15 @@ module.exports = function (app) {
         });
     });
 
-    // app.get("/book/:isbn", function(req, res) {
-    //     db.Book.findOne({
-    //         where: {
-    //             isbn: req.params.isbn
-    //         }
-    //     }).then( function(book) {
-    //         res.render('book', {user: req.user, book: book});
-    //     })
-    // });
+    app.get("/book/:isbn", function(req, res) {
+         db.Book.findOne({
+             where: {
+                 isbn: req.params.isbn
+             }
+         }).then( function(book) {
+             res.render('book', {user: req.user, book: book});
+         })
+     });
 
     app.get("/home/:order", function (req, res) {
         db.Book.findAll({

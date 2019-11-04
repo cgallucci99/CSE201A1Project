@@ -82,6 +82,30 @@ describe('Book', function () {
         }
       });
     });
+
+    describe('#rateBook()', function () {
+      it('should rate a book, then return the rating', async function() {
+        var isbn = 9780451524935;
+        var book = await db.Book.findOne({
+          where: {
+            isbn: isbn
+          }
+        });
+        var previousRating = book.rating;
+        var previousRaters = book.raters;
+        var rating = 5;
+        rateBook(isbn, rating);
+        book = await db.Book.findOne({
+          where: {
+            isbn: isbn
+          }
+        });
+        var updatedRating = book.rating;
+        var updatedRaters = book.raters;
+        expect(updatedRating).to.equal((previousRating + rating) / (previousRaters + 1));
+        expect(updatedRaters).to.equal(previousRaters + 1);
+      });
+    });
   });
 });
 

@@ -1,0 +1,71 @@
+.rating_bar {
+    /*this class creats 5 stars bar with empty stars */
+    /*each star is 16 px, it means 5 stars will make 80px together */
+    width: 80px;
+    /*height of empty star*/
+    height: 16px;
+    /*background image with stars */
+    background: url(../images/stars.png);
+    /*which will be repeated horizontally */
+    background-repeat: repeat-x;
+    /* as we are using sprite image, we need to position it to use right star, 
+    //0 0 is for empty */
+    background-position: 0 0;
+    /* align inner div to the left */
+    text-align: left;
+    float: left;
+}
+.rating {
+    /* height of full star is the same, we won't specify width here */
+    height: 16px;
+    /* background image with stars */
+    background: url(../images/stars.png);
+    /* now we will position background image to use 16px from top, 
+    //which means use full stars */
+    background-position: 0 -16px;
+    /* and repeat them horizontally */
+    background-repeat: repeat-x;
+}
+
+@import url(https://cdn.jsdelivr.net/npm/uikit@3.2.3/dist/css/uikit.min.css);
+
+fieldset, label { margin: 0; padding: 0; }
+body{ margin: 20px; }
+h1 { font-size: 1.5em; margin: 10px; }
+
+/****** Style Star Rating Widget *****/
+
+.rating2 { 
+  border: none;
+  float: left;
+}
+
+.rating2 > input { display: none; } 
+.rating2 > label:before { 
+  margin: 5px;
+  font-size: 1.25em;
+  font-family: FontAwesome;
+  display: inline-block;
+  content: "\f005";
+}
+
+.rating2 > .half:before { 
+  content: "\f089";
+  position: absolute;
+}
+
+.rating2 > label { 
+  color: #ddd; 
+ float: right; 
+}
+
+/***** CSS Magic to Highlight Stars on Hover *****/
+
+.rating2 > input:checked ~ label, /* show gold star when clicked */
+.rating2:not(:checked) > label:hover, /* hover current star */
+.rating2:not(:checked) > label:hover ~ label { color: #FFD700;  } /* hover previous stars in list */
+
+.rating2 > input:checked + label:hover, /* hover current star when changing rating2 */
+.rating2 > input:checked ~ label:hover,
+.rating2 > label:hover ~ input:checked ~ label, /* lighten current selection */
+.rating2 > input:checked ~ label:hover ~ label { color: #FFED85;  } 

@@ -5,8 +5,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script data-search-pseudo-elements src="https://use.fontawesome.com/38e37a7174.js"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
         integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="../css/stars.css">
     <title>BookBot</title>
 </head>
 
@@ -19,8 +21,35 @@
         <%= genre.genreName %>,
     <% }); %>
     </p>
-    <p><strong>Rating:</strong> <%= book.rating %> (based on <%= book.raters %> reviews)</p>
+    <p class="float-left"><strong>Rating: &nbsp;</strong> </p>
+        <% var percent = Math.round(book.rating) / 5 * 100; %>
+        <!-- div element full of empty stars -->
+<div class='rating_bar'>
+    <!-- div element that contains full stars with percentage width, 
+    which represents rating -->
+    <div  class='rating' style='width:<%=percent%>%;'>
+    </div>
+</div>
+        <p>&nbsp; <%= book.rating %>/5 (based on <%= book.raters %> reviews)</p>
     <p><%= book.synopsis %></p>
+    <% if(user) { %>
+    <div>
+        <form action="/api/rate/<%=book.isbn%>">
+            <fieldset class="rating2">
+                <input type="radio" id="star5" name="rating2" value="5" /><label class = "full" for="star5" title="5 stars"></label>
+                <input type="radio" id="star4half" name="rating2" value="4.5" /><label class="half" for="star4half" title="4.5 stars"></label>
+                <input type="radio" id="star4" name="rating2" value="4" /><label class = "full" for="star4" title="4 stars"></label>
+                <input type="radio" id="star3half" name="rating2" value="3.5" /><label class="half" for="star3half" title="stars"></label>
+                <input type="radio" id="star3" name="rating2" value="3" /><label class = "full" for="star3" title="3 stars"></label>
+                <input type="radio" id="star2half" name="rating2" value="2.5" /><label class="half" for="star2half" title="2.5 stars"></label>
+                <input type="radio" id="star2" name="rating2" value="2" /><label class = "full" for="star2" title="2 stars"></label>
+                <input type="radio" id="star1half" name="rating2" value="1.5" /><label class="half" for="star1half" title="1.5 stars"></label>
+                <input type="radio" id="star1" name="rating2" value="1" /><label class = "full" for="star1" title="1 star"></label>
+                <input type="radio" id="starhalf" name="rating2" value="0.5" /><label class="half" for="starhalf" title="0.5 stars"></label>
+            </fieldset>
+        </form>
+    </div>
+    <% } %>
 </div>
 
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"

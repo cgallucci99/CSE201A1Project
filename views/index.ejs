@@ -38,16 +38,16 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="row">
-                            <div class="col-md-7">
+                            <div class="col-xl-7">
                                 <h3><a href="/book/<%= book.isbn %>" style="color:black"><%= book.title %></a></h3>
                             </div>
-                            <div class="col-md-2 col-4 pt-2">
+                            <div class="col-xl-2 col-4 pt-2">
                                 <p><%= book.author %></p>
                             </div>
-                            <div class="col-md-1 col-4 pt-2">
+                            <div class="col-xl-1 col-4 pt-2">
                                 <p><%= book.publicationYear %></p>
                             </div>
-                            <div class="col-md-2 col-4">
+                            <div class="col-xl-2 col-4">
                                 <% if (user) { %>
                                 <form action="/api/addToCatalogue/<%=user.id%>/<%=book.isbn%>" method="POST">
                                     <button class="btn btn-primary">

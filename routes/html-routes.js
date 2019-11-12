@@ -64,4 +64,10 @@ module.exports = function (app) {
         } 
     });
 
+    app.get("/addBook", /*isAuthenticated,*/ function(req, res) {
+        db.sequelize.query("SELECT * FROM Genres", {type: sequelize.QueryTypes.SELECT}).then(results => {
+            res.render('addBook', {user: req.user, successMessage: req.flash('success'), errorMessage: req.flash('error'), genres: results});
+        })
+    });
+
 }

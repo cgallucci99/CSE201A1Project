@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <title>Add Book</title>
+</head>
+
+<% include ./partials/header.ejs %>
+
+<div class="container-fluid mt-3">
+    <% include ./partials/message.ejs %>
+    <div class="row">
+        <div class="col-lg-4 col-md-3"></div>
+        <div class="col-lg-4 col-md-6">
+            <div class="card text-center">
+                <div class="card-body">
+                    <!-- <div class="row"> -->
+                        <div>
+                            <strong>Add a Book</strong>
+                            <form action="/api/addBook" method="POST">
+                                <div class="form-group">
+                                    <input class="form-control" required type="text" name="title"
+                                        id="title" placeholder="Title">
+                                </div>
+                                <div class="form-group">
+                                    <input class="form-control" required type="text" name="author"
+                                        placeholder="Author">
+                                </div>
+                                <div class="form-group">
+                                    <input class="form-control" required type="text" name="publicationYear"
+                                        placeholder="Publication Year">
+                                </div>
+                                <div class="form-group">
+                                    <input class="form-control" required type="text" name="synopsis"
+                                        placeholder="Synopsis" id="synopsis">
+                                </div>
+                                <div class="form-group">
+                                    <select class="custom-select" id="genre1">
+                                        <option selected>Choose...</option>
+                                        <% genres.forEach( function(genre) { %>
+                                            <option value="<%=genre.genreID%>" ><%=genre.genreName%></option>
+                                        <% }); %>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <select class="custom-select" id="genre2">
+                                        <option selected>Choose...</option>
+                                        <% genres.forEach( function(genre) { %>
+                                            <option value="<%=genre.genreID%>" ><%=genre.genreName%></option>
+                                        <% }); %>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <input class="form-control" required type="text" name="pageCount"
+                                        placeholder="Page Count" id="pageCount">
+                                </div>
+                                <div class="form-group">
+                                    <input class="form-control" required type="text" name="isbn"
+                                        placeholder="ISBN" id="isbn">
+                                </div>
+                                <div class="form-group">
+                                    <input class="form-control" type="text" name="cover"
+                                        placeholder="Cover Art Link" id="cover">
+                                </div>
+                                <button type="submit" class="btn btn-default" id="submit">Submit</button>
+                            </form>
+                        </div>
+                    <!-- </div> -->
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-6"></div>
+    </div>
+</div>
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+    </body>
+</html>

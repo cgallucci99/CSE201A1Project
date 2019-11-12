@@ -3,6 +3,27 @@ var passport = require('../config/passport');
 var Sequelize = require('sequelize');
 
 module.exports = function (app) {
+
+    app.post('/api/addBook', function(req, res) {
+        db.Book.create({
+            title: req.body.title,
+            author: req.body.author,
+            publicationYear: req.body.publicationYear,
+            synopsis: req.body.synopsis,
+            genre1: req.body.genre1,
+            genre2: req.body.genre2,
+            pageCount: req.body.pageCount,
+            isbn: req.body.isbn,
+            cover: req.body.cover
+        }).then(function(book) {
+            req.flash('success', 'Successfully added "' + book.title + '" to database');
+            res.redirect('/');
+        }).catch(function(error) {
+            req.flash('error', 'Error adding book: ' + error);
+            res.redirect('back');
+        });
+    });
+
     app.post("/api/login", passport.authenticate('local', {
         successRedirect: '/',
         failureRedirect: '/login',

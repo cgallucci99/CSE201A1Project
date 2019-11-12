@@ -15,7 +15,10 @@
     <h1><%= book.title %></h1>
     <h3><%= book.author %> (<%= book.publicationYear %>)</h3>
     <!-- TODO: map genres to string (currently an integer) -->
-    <p style="margin-bottom:0%"><strong>Genre(s):</strong> <%= book.genre1 %> <%= book.genre2 %></p>
+    <p style="margin-bottom:0%"><strong>Genre(s):</strong> <% genres.forEach( function(genre) { %>
+        <%= genre.genreName %>,
+    <% }); %>
+    </p>
     <p><strong>Rating:</strong> <%= book.rating %> (based on <%= book.raters %> reviews)</p>
     <p><%= book.synopsis %></p>
 </div>

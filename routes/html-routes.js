@@ -29,7 +29,12 @@ module.exports = function (app) {
                  isbn: req.params.isbn
              }
          }).then( function(book) {
-             res.render('book', {user: req.user, book: book});
+             db.sequelize.query("SELECT DISTINCT Genres.genreName FROM Genres, Books WHERE Genres.genreID = ? OR Genres.genreID = ?;", {replacements: [book.genre1, book.genre2], type: sequelize.QueryTypes.SELECT}).then(genres => {
+                res.render('book', {user: req.user, book: book, genres: genres});
+             }).catch(function (error) {
+                req.flash('error', error.message);
+                res.redirect('/');
+             });
          })
      });
 

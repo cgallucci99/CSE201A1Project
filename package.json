@@ -4,7 +4,7 @@
   "description": "BookBot book catalog for CSE 201",
   "main": "app.js",
   "scripts": {
-    "test": "mocha",
+    "test": "nyc --reporter=html mocha",
     "start": "node app.js"
   },
   "repository": {
@@ -29,6 +29,7 @@
     "mysql": "^2.17.1",
     "mysql2": "^1.7.0",
     "nodemon": "^1.19.4",
+    "nyc": "^14.1.1",
     "passport": "^0.4.0",
     "passport-local": "^1.0.0",
     "selenium-webdriver": "^4.0.0-alpha.5",

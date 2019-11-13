@@ -24,6 +24,17 @@ module.exports = function (app) {
         });
     });
 
+    app.post('/api/search', function(req, res) {
+        console.log('in api');
+        try {
+            var search = req.body.search;
+            res.redirect('/home/isbn?search=' + encodeURI(search));
+        }
+        catch {
+            console.log('error parsing query param')
+        }
+    });
+
     app.post("/api/login", passport.authenticate('local', {
         successRedirect: '/',
         failureRedirect: '/login',

@@ -1,5 +1,6 @@
 var db = require('../models');
 var sequelize = require('sequelize');
+var op = sequelize.Op;
 var isAuthenticated = require("../config/middleware/isAuthenticated");
 
 module.exports = function (app) {
@@ -39,7 +40,23 @@ module.exports = function (app) {
      });
 
     app.get("/home/:order", function (req, res) {
+        // Default to wildcard
+        var where = {
+            title: {
+                [op.like]: '%'
+            }
+         };
+
+         // If we are searching: filter by search
+        if (req.query.search) {
+            var search = decodeURI(req.query.search);
+            where['title'] = {
+                [op.like]: '%' + search + '%'
+            }
+        }
+        
         db.Book.findAll({
+            where,
             order: sequelize.col(req.params.order)
         }).then(books => res.render('index', {books: books, user: req.user, successMessage: req.flash('success'), errorMessage: req.flash('error')})).catch(function(err) {
             console.log(err);

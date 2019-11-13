@@ -55,6 +55,14 @@ module.exports = function (app) {
             req.flash('error', 'Unable to add review');
             res.redirect('back');
         });
+    app.post('/api/search', function(req, res) {
+        try {
+            var search = req.body.search;
+            res.redirect('/home/isbn?search=' + encodeURI(search));
+        }
+        catch {
+            console.log('error parsing query param')
+        }
     });
 
     app.post("/api/login", passport.authenticate('local', {

@@ -13,7 +13,8 @@
 </head>
 
 <% include ./partials/header.ejs %>
-<div class="container">
+<div class="container mt-3">
+    <% include ./partials/message.ejs %>
     <h1><%= book.title %></h1>
     <h3><%= book.author %> (<%= book.publicationYear %>)</h3>
     <!-- TODO: map genres to string (currently an integer) -->

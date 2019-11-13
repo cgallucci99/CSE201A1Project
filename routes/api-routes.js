@@ -54,7 +54,9 @@ module.exports = function (app) {
             console.log('could not insert into reviews', error);
             req.flash('error', 'Unable to add review');
             res.redirect('back');
-        });
+        })
+    });
+    
     app.post('/api/search', function(req, res) {
         try {
             var search = req.body.search;

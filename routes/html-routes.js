@@ -31,7 +31,7 @@ module.exports = function (app) {
              }
          }).then( function(book) {
              db.sequelize.query("SELECT DISTINCT Genres.genreName FROM Genres, Books WHERE Genres.genreID = ? OR Genres.genreID = ?;", {replacements: [book.genre1, book.genre2], type: sequelize.QueryTypes.SELECT}).then(genres => {
-                res.render('book', {user: req.user, book: book, genres: genres});
+                res.render('book', {user: req.user, book: book, genres: genres, successMessage: req.flash('success'), errorMessage: req.flash('error')});
              }).catch(function (error) {
                 req.flash('error', error.message);
                 res.redirect('/');

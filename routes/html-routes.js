@@ -40,13 +40,21 @@ module.exports = function (app) {
      });
 
     app.get("/home/:order", function (req, res) {
-        var where = { };
-        var search = decodeURI(req.query.search);
-        if (search && search !== '') {
+        // Default to wildcard
+        var where = {
+            title: {
+                [op.like]: '%'
+            }
+         };
+
+         // If we are searching: filter by search
+        if (req.query.search) {
+            var search = decodeURI(req.query.search);
             where['title'] = {
                 [op.like]: '%' + search + '%'
             }
         }
+        
         db.Book.findAll({
             where,
             order: sequelize.col(req.params.order)

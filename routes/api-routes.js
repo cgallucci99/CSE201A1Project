@@ -25,7 +25,6 @@ module.exports = function (app) {
     });
 
     app.post('/api/search', function(req, res) {
-        console.log('in api');
         try {
             var search = req.body.search;
             res.redirect('/home/isbn?search=' + encodeURI(search));

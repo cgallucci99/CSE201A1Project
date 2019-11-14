@@ -40,14 +40,15 @@ module.exports = function (app) {
                     req.flash('success', 'Added review');
                     res.redirect('back');
                 }).catch(err => {
-                    console.log('could not update book' + error);
+                    console.log('could not update book' + err);
                     req.flash('error', 'Unable to add review');
                     res.redirect('back');
                 })
             }).catch(error => {
                 console.log('couldnt find book' + error);
                 res.redirect('back');
-            })
+            });
+            req.flash('success', 'Added review');
             console.log('success');
             res.redirect('back');
         }).catch(function(err) {

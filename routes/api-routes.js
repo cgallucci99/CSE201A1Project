@@ -25,36 +25,8 @@ module.exports = function (app) {
     });
 
     app.post('/api/rate/:isbn/:user', function(req, res) {
-        db.sequelize.query('INSERT INTO Reviews VALUES (?, ?, ?, ?);', {replacements: [req.params.isbn, req.params.user, req.body.rating, req.body.review]}).then((book)=>{
-            db.Book.findOne({
-                where: {
-                    isbn: req.params.isbn
-                }
-            }).then(book => {
-                db.Book.update({
-                    rating: (book.rating + req.body.rating) / (book.raters+1),
-                    raters: book.raters + 1
-                },
-                {where: {isbn: book.isbn}}).then(()=>{
-                    console.log('updated book');
-                    req.flash('success', 'Added review');
-                    res.redirect('back');
-                }).catch(err => {
-                    console.log('could not update book' + error);
-                    req.flash('error', 'Unable to add review');
-                    res.redirect('back');
-                })
-            }).catch(error => {
-                console.log('couldnt find book' + error);
-                res.redirect('back');
-            })
-            console.log('success');
-            res.redirect('back');
-        }).catch(function(err) {
-            console.log('could not insert into reviews', error);
-            req.flash('error', 'Unable to add review');
-            res.redirect('back');
-        })
+        db.Book.rateBook(req.params.isbn, req.params.user, req.body.rating, req.body.review, req, res);
+        
     });
     
     app.post('/api/search', function(req, res) {

@@ -76,36 +76,50 @@ describe('Book', function () {
       assert.notEqual(book.synopsis, 'test1');
       assert.equal(book.isbn, 123456789);
       // remove test book so it doesn't appear on the database
-      await db.Book.destroy({
-        where: {
-          synopsis: 'test'
-        }
-      });
+
     });
   });
 
   describe('#rateBook()', function () {
     it('should rate a book, then return the rating', async function () {
       // TODO Change this to match how we do reviews now
-      var isbn = 9780451524935;
+      var isbn = 123456789;
       var book = await db.Book.findOne({
         where: {
           isbn: isbn
         }
       });
-      var previousRating = book.rating;
-      var previousRaters = book.raters;
+      var previousRating = Number(book.rating);
+      var previousRaters = Number(book.raters);
       var rating = 5;
-      rateBook(isbn, rating);
+      var userId = 181; // id for testUser@gmail.com
+      await db.Book.rateBook(isbn, userId,  rating);
       book = await db.Book.findOne({
         where: {
           isbn: isbn
         }
       });
-      var updatedRating = book.rating;
-      var updatedRaters = book.raters;
+      var updatedRating = Number(book.rating);
+      var updatedRaters = Number(book.raters);
       expect(updatedRating).to.equal((previousRating + rating) / (previousRaters + 1));
       expect(updatedRaters).to.equal(previousRaters + 1);
+    });
+  });
+  after(function() {
+    // remove test book and review so it doesn't appear on the database
+    db.sequelize.query('DELETE FROM Reviews WHERE isbn = 123456789', sequelize.QueryTypes.DELETE).then(()=>{
+      console.log('deleted review');
+    }).catch(err => {
+      console.log('did not delete review');
+    });
+    db.Book.destroy({
+      where: {
+        synopsis: 'test'
+      }
+    }).then(()=>{
+      console.log('deleted book');
+    }).catch(err => {
+      console.log('did not delete book');
     });
   });
 });

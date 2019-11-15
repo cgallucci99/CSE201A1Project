@@ -25,7 +25,12 @@ module.exports = function (app) {
     });
 
     app.post('/api/rate/:isbn/:user', function(req, res) {
-        db.Book.rateBook(req.params.isbn, req.params.user, req.body.rating, req.body.review, req, res);
+        if (db.Book.rateBook(req.params.isbn, req.params.user, req.body.rating, req.body.review, req, res)) {
+            req.flash('success', 'Successfully rated the book');
+        } else {
+            req.flash('error', 'Could not add review');
+        }
+        res.redirect('/book/' + req.params.isbn);
         
     });
     

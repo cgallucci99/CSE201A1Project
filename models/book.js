@@ -44,7 +44,7 @@ module.exports = function(sequelize, DataTypes) {
     }
     );
 
-    Book.rateBook = async function(isbn, userId, rating, review, req, res) {
+    Book.rateBook = async function(isbn, userId, rating, review) {
         var book;
         try {
             await sequelize.query('INSERT INTO Reviews VALUES (?, ?, ?, ?);', {replacements: [isbn, userId, rating, review]});
@@ -56,10 +56,11 @@ module.exports = function(sequelize, DataTypes) {
                 });
             } catch (err) {
                 console.log('couldn\'t find book');
+                return false;
             }
             try {
                 var updatedRating = (book.rating + Number(rating)) / (Number(book.raters)+1);
-                var updatedRaters = book.raters + 1;
+                var updatedRaters = Number(book.raters) + 1;
                 await Book.update({
                             rating: updatedRating,
                             raters: updatedRaters
@@ -67,15 +68,13 @@ module.exports = function(sequelize, DataTypes) {
                         {where: {isbn: book.isbn}});
             } catch (err) {
                 console.log('couldn\'t update book');
+                return false;
             }
-            req.flash('success', 'Successfully rated the book');
             console.log('success');
+            return true;
         } catch (err) {
-            req.flash('error', 'Could not add review');
             console.log('could not insert into reviews');
         }
-        
-        res.redirect('/book/'+isbn);
     }
 
     Book.associate = (models) => {

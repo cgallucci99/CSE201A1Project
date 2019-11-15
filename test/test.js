@@ -82,29 +82,30 @@ describe('Book', function () {
         }
       });
     });
+  });
 
-    describe('#rateBook()', function () {
-      it('should rate a book, then return the rating', async function() {
-        var isbn = 9780451524935;
-        var book = await db.Book.findOne({
-          where: {
-            isbn: isbn
-          }
-        });
-        var previousRating = book.rating;
-        var previousRaters = book.raters;
-        var rating = 5;
-        rateBook(isbn, rating);
-        book = await db.Book.findOne({
-          where: {
-            isbn: isbn
-          }
-        });
-        var updatedRating = book.rating;
-        var updatedRaters = book.raters;
-        expect(updatedRating).to.equal((previousRating + rating) / (previousRaters + 1));
-        expect(updatedRaters).to.equal(previousRaters + 1);
+  describe('#rateBook()', function () {
+    it('should rate a book, then return the rating', async function () {
+      // TODO Change this to match how we do reviews now
+      var isbn = 9780451524935;
+      var book = await db.Book.findOne({
+        where: {
+          isbn: isbn
+        }
       });
+      var previousRating = book.rating;
+      var previousRaters = book.raters;
+      var rating = 5;
+      rateBook(isbn, rating);
+      book = await db.Book.findOne({
+        where: {
+          isbn: isbn
+        }
+      });
+      var updatedRating = book.rating;
+      var updatedRaters = book.raters;
+      expect(updatedRating).to.equal((previousRating + rating) / (previousRaters + 1));
+      expect(updatedRaters).to.equal(previousRaters + 1);
     });
   });
 });
@@ -134,7 +135,7 @@ describe('DefaultBrowserTest', function () {
     });
   });
   describe('#loginFail', function () {
-    it('should try to login with nonexistent email, fail, try to login with invalid password, fail, try to log in with valid credentials and succeed', async function() {
+    it('should try to login with nonexistent email, fail, try to login with invalid password, fail, try to log in with valid credentials and succeed', async function () {
       await driver.get('localhost:3000/login');
       await driver.findElement(By.name('email')).sendKeys('invalid', Key.ENTER);
       await driver.findElement(By.name('password')).sendKeys('invalid', Key.ENTER);
@@ -147,7 +148,7 @@ describe('DefaultBrowserTest', function () {
     });
   });
   describe('#loginSucceedAndLogout', function () {
-    it('should try to login and succeed, then logout', async function() {
+    it('should try to login and succeed, then logout', async function () {
       await driver.get('localhost:3000/login');
       await driver.findElement(By.name('email')).sendKeys('test2@user.com', Key.ENTER);
       await driver.findElement(By.name('password')).sendKeys('password', Key.ENTER);

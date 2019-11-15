@@ -20,11 +20,11 @@ app.use(session({
       maxAge: 3600000 // max login session is 1 hour
   }
 }));
-// web stuff
 app.use(passport.initialize());
 app.use(passport.session());
 app.set("view engine","ejs");
 app.use(flash());
+// web stuff
 require("./routes/html-routes.js")(app);
 require("./routes/api-routes")(app);
 

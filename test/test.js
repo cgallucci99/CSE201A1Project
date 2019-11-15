@@ -4,12 +4,11 @@ var db = require("../models");
 const { Builder, By, Key, until } = require('selenium-webdriver');
 const { expect } = require('chai');
 
-// Test User class
-
+// ############################ Test User class #####################################
 describe('User', function () {
   describe('#validPassword()', function () {
     it('should return True when password is valid, False otherwise', async function () {
-
+      // find the desired test user
       const user = await db.User.findOne({
         where: {
           email: 'test@user.com'
@@ -24,65 +23,68 @@ describe('User', function () {
   });
   describe('#create()', function () {
     it('should have email equal to test@user.com, firstName equal to test, lastName equal to user, password not equal to password', async function () {
+      // remove the test user so we can add them again
       await db.User.destroy({
         where: {
           email: 'test@user.com'
         }
       });
+      // create the user
       await db.User.create({
         email: 'test@user.com',
         password: 'password',
         firstName: 'test',
         lastName: 'user'
       });
+      // make sure the user is in the database
       const user = await db.User.findOne({
         where: {
           email: 'test@user.com'
         }
       });
+      // make sure the attributes were correctly inputted into the databas
       assert.equal(user.email, 'test@user.com');
       assert.equal(user.firstName, 'test');
       assert.equal(user.lastName, 'user');
+      // password should be hashed
       assert.notEqual(user.password, 'password');
     });
   });
 });
 
-// Tests for Books
+// ############################### Tests for Books ################################
 describe('Book', function () {
   describe('#createBook()', function () {
     it('should have book with correct attributes', async function () {
-
+      // make a test book
       await db.Book.create({
-        title: 'Harry Potter And The Goblet Of Fire',
-        author: 'J.K. Rowling',
+        title: 'Test Book',
+        author: 'Test Author',
         publicationYear: 2006,
         synopsis: 'test',
         isbn: 123456789
       }).catch(function (err) {
         console.log(err);
       });
-
-
+      // make sure the book was correctly added to the database
       const book = await db.Book.findOne({
         where: {
           synopsis: 'test'
         }
       });
-      expect(book.author).to.equal('J.K. Rowling');
-      assert.equal(book.title, 'Harry Potter And The Goblet Of Fire');
+      // make sure the attributes were correctly added to the database
+      expect(book.author).to.equal('Test Author');
+      assert.equal(book.title, 'Test Book');
       assert.equal(book.publicationYear, 2006);
       assert.equal(book.synopsis, 'test')
       assert.notEqual(book.synopsis, 'test1');
       assert.equal(book.isbn, 123456789);
-      // remove test book so it doesn't appear on the database
-
     });
   });
 
   describe('#rateBook()', function () {
     it('should rate a book, then return the rating', async function () {
-      // TODO Change this to match how we do reviews now
+      // locate the test book
       var isbn = 123456789;
       var book = await db.Book.findOne({
         where: {
@@ -93,7 +95,9 @@ describe('Book', function () {
       var previousRaters = Number(book.raters);
       var rating = 5;
       var userId = 181; // id for testUser@gmail.com
-      await db.Book.rateBook(isbn, userId,  rating);
+      // try to rate the book
+      await db.Book.rateBook(isbn, userId, rating);
+      // locate the book again to check if it was properly updated
       book = await db.Book.findOne({
         where: {
           isbn: isbn
@@ -101,13 +105,15 @@ describe('Book', function () {
       });
       var updatedRating = Number(book.rating);
       var updatedRaters = Number(book.raters);
+      // make sure the rating was properly calculated
       expect(updatedRating).to.equal((previousRating + rating) / (previousRaters + 1));
       expect(updatedRaters).to.equal(previousRaters + 1);
     });
   });
-  after(function() {
+  // This is run after all of the above book tests are run
+  after(function () {
     // remove test book and review so it doesn't appear on the database
-    db.sequelize.query('DELETE FROM Reviews WHERE isbn = 123456789', sequelize.QueryTypes.DELETE).then(()=>{
+    db.sequelize.query('DELETE FROM Reviews WHERE isbn = 123456789', sequelize.QueryTypes.DELETE).then(() => {
       console.log('deleted review');
     }).catch(err => {
       console.log('did not delete review');
@@ -116,7 +122,7 @@ describe('Book', function () {
       where: {
         synopsis: 'test'
       }
-    }).then(()=>{
+    }).then(() => {
       console.log('deleted book');
     }).catch(err => {
       console.log('did not delete book');
@@ -124,9 +130,10 @@ describe('Book', function () {
   });
 });
 
-// Test web pages
+// ################################## Test web pages #####################################
 
 describe('DefaultBrowserTest', function () {
+  // set timeout for longer in case PC is running slow
   this.timeout(20000);
   const driver = new Builder().forBrowser('chrome').build();
   describe('#index', function () {
@@ -135,7 +142,6 @@ describe('DefaultBrowserTest', function () {
       await driver.manage().window().maximize();
       await driver.get('localhost:3000');
       const title = await driver.getTitle();
-
       expect(title).to.equal('BookBot');
     });
   });
@@ -175,7 +181,7 @@ describe('DefaultBrowserTest', function () {
       expect(button).to.be.true;
     });
   });
-
+  // once the commands are finished, quit the browser
   after(async function () {
     driver.quit();
   });

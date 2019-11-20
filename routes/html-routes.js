@@ -2,6 +2,7 @@ var db = require('../models');
 var sequelize = require('sequelize');
 var op = sequelize.Op;
 var isAuthenticated = require("../config/middleware/isAuthenticated");
+var isAdmin = require("../config/middleware/isAdmin");
 
 module.exports = function (app) {
     // default GET route, redirects to the home page, sorting by ISBN
@@ -51,7 +52,8 @@ module.exports = function (app) {
         var where = {
             title: {
                 [op.like]: '%'
-            }
+            },
+            approved: true
         };
 
         // If we are searching: filter by search
@@ -98,6 +100,33 @@ module.exports = function (app) {
         // find the genres to display for selection
         db.sequelize.query("SELECT * FROM Genres", { type: sequelize.QueryTypes.SELECT }).then(results => {
             res.render('addBook', { user: req.user, successMessage: req.flash('success'), errorMessage: req.flash('error'), genres: results });
+        })
+    });
+
+    // ####################### ADMIN ROUTES #########################
+
+    app.get('/unapprovedBooks', isAuthenticated, isAdmin, function(req, res) {
+        db.Book.findAll({
+            where: {
+                approved: false
+            }
+        }).then((books) => {
+            res.render('unapprovedBooks', { user: req.user, books: books, successMessage: req.flash('success'), errorMessage: req.flash('error')})
+        }).catch((err) => {
+            console.log('couldn\'t find books');
+            res.redirect('back');
+        })
+    });
+
+    app.get('/approveBook/:isbn', isAuthenticated, isAdmin, function (req, res) {
+        db.Book.findOne({
+            where: {
+                isbn: req.params.isbn
+            }
+        }).then((book) => {
+            db.sequelize.query("SELECT * FROM Genres", { type: sequelize.QueryTypes.SELECT }).then(results => {
+                res.render('approveBook', { user: req.user, book: book, successMessage: req.flash('success'), errorMessage: req.flash('error'), genres: results });
+            })
         })
     });
 

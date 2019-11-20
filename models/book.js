@@ -37,6 +37,10 @@ module.exports = function(sequelize, DataTypes) {
       },
       cover: {
           type: DataTypes.STRING
+      },
+      approved: {
+          type: DataTypes.BOOLEAN,
+          defaultValue: false
       }
     },
     {

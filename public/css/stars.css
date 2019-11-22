@@ -67,3 +67,24 @@ fieldset, label { margin: 0; padding: 0; }
 .rating2 > input:checked ~ label:hover,
 .rating2 > label:hover ~ input:checked ~ label, /* lighten current selection */
 .rating2 > input:checked ~ label:hover ~ label { color: #FFED85;  } 
+
+.navbar-light {
+  background-color: #A9B7C0;
+}
+
+.book-card-title {
+  color: #697780;
+}
+
+.book-card-title:hover {
+  color: #495760;
+}
+
+.btn-default {
+  background-color: #C7D8C6;
+  color: rgb(51, 84, 105);
+}
+
+body {
+  background-color: #EFD9C1;
+}

@@ -90,6 +90,10 @@ fieldset, label { margin: 0; padding: 0; }
   color: #1E4814;
 }
 
+.navbar-nav .nav-item .nav-link {
+  color: #394750;
+}
+
 body {
   background-color: #EFD9C1;
 }

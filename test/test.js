@@ -163,6 +163,7 @@ describe('DefaultBrowserTest', function () {
       expect(message).to.equal('Incorrect email.');
       await driver.findElement(By.name('email')).sendKeys('test@user.com', Key.ENTER);
       await driver.findElement(By.name('password')).sendKeys('invalid', Key.ENTER);
+      await driver.sleep(50);
       message = await driver.findElement(By.id('message')).getText();
       expect(message).to.equal('Incorrect password.');
     });

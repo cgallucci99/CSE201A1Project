@@ -77,7 +77,7 @@ module.exports = function (app) {
             limit: 15,
             order: sequelize.col(req.params.order)
         }).then(books => { // show the books if any are found
-            res.render('index', { books: books, user: req.user, page: page, order: req.params.order, successMessage: req.flash('success'), errorMessage: req.flash('error') })
+            res.render('index', { books: books, user: req.user, page: page, order: req.params.order, search: req.query.search, successMessage: req.flash('success'), errorMessage: req.flash('error') })
         }).catch(function (err) { // otherwise show the not found page
             console.log(err);
             res.status(404).render('not-found', { user: req.user });

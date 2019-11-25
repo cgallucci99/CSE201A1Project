@@ -20,7 +20,7 @@
         <% } %>
     <% include ./partials/message.ejs %>
     <div class="media">
-        <img class="book-cover rounded mr-3" src="<%= cover %>" alt="<%= book.title %> cover">
+        <img class="book-cover rounded mr-3" style="height: 500px; width: 300px;" src="<%= cover %>" alt="<%= book.title %> cover">
         <div class="media-body">
             <h1><%= book.title %></h1>
             <h3><%= book.author %> (<%= book.publicationYear %>)</h3>

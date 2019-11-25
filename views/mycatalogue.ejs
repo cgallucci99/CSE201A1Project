@@ -7,6 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
         integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="../css/stars.css">
     <title>MyCatalogue</title>
 </head>
 
@@ -24,9 +25,8 @@
             <div class="card mb-4">
                 <img class="card-img-top" src="<%= cover %>" alt="<%= book.title %> cover">
                 <div class="card-body">
-                    <h5 class="card-title"><%= book.title %></h5>
+                    <h5 class="card-title"><a class="book-card-title" href="/book/<%=book.isbn%>"><%= book.title %></a></h5>
                     <p class="card-text"><%= book.synopsis.substring(0, 200) + "..." %></p>
-                    <a href="/book/<%= book.isbn %>" class="btn btn-primary">View book</a>
                     <form action="/api/removeFromCatalogue/<%=user.id%>/<%=book.isbn%>" method="POST" class="d-inline float-right">
                         <button class="btn btn-primary">
                                 Remove from List

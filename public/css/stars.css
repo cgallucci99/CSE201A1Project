@@ -73,11 +73,16 @@ fieldset, label { margin: 0; padding: 0; }
 }
 
 .book-card-title {
-  color: #697780;
+  color: #596770;
 }
 
 .book-card-title:hover {
   color: #495760;
+}
+
+.btn-primary {
+  background-color: #d8ebf6;
+  color: #435274;
 }
 
 .btn-default {

@@ -51,57 +51,52 @@ module.exports = function (app) {
         }
     });
 
-    app.post('/api/profile', passport.authenticate('local', {
-        // successRedirect: '/',
-        failureRedirect: '/profile',
-        successFlash: false,
-        failureFlash: true
-    }), async function (req, res) {
+    app.post('/api/profile', isAuthenticated, async function (req, res) {
         try {
-            // Update user in db
-            db.User.update(
-                {
-                    firstName: req.body.firstName
-                },
-                { 
-                    where: {
-                        email: req.user.email
-                    }
+            var user = await db.User.findOne({
+                where: {
+                    email: req.user.email
                 }
-            );
-            db.User.update(
-                {
-                    lastName: req.body.lastName
-                },
-                { 
-                    where: {
-                        email: req.user.email
-                    }
-                }
-            );
-            if (req.body.newPasswordCheck && req.body.password && req.body.password !== "") {
-                db.User.update(
-                    {
-                        password: req.body.new_password
-                    },
-                    { 
-                        where: {
-                            email: req.user.email
-                        }
-                    }
-                );
-
-                req.user.password = req.body.new_password;
+            });
+            if (!user.validPassword(req.body.password)) {
+                throw "Incorrect Password";
             }
-
-            // Update user model
-            req.user.firstName = req.body.firstName;
-            req.user.lastName = req.body.lastName;
-
+            // Update user in db
+            var update = {
+                firstName: req.body.firstName,
+                lastName: req.body.lastName
+            }
+            if (req.body.newPasswordCheck && req.body.password && req.body.password !== "") {
+                update = {
+                    firstName: req.body.firstName,
+                    lastName: req.body.lastName,
+                    password: user.generateHashedPassword(req.body.new_password)
+                }
+            }
+            await db.User.update(
+                update,
+                { 
+                    where: {
+                        email: req.user.email
+                    }
+                }
+            );
+            user = await db.User.findOne({
+                where: {
+                    email: req.user.email
+                }
+            });
+            req.login(user, function (error) {
+                if (!error) {
+                    console.log("successfully changed cached user");
+                }
+            })
             req.flash('success', 'Successfully updated profile.');
             res.redirect('/profile');
-        } catch {
+        } catch (err) {
+            console.log(err);
             req.flash('error', 'Could not update profile.');
+            res.redirect('/profile');
         }
     });
 
@@ -182,7 +177,7 @@ module.exports = function (app) {
     // POST route for signing up for an account
     app.post("/api/signup", function (req, res) {
         // make sure the password is at least 8 characters
-        if (req.body.password.length <= 8) {
+        if (req.body.password.length < 8) {
             req.flash('error', 'Must have password at least 8 characters');
             res.redirect('/signup');
         } else {

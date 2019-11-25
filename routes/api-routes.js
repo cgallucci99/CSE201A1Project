@@ -30,7 +30,7 @@ module.exports = function (app) {
     app.post('/api/rate/:isbn/:user', isAuthenticated, function (req, res) {
         // make sure the correct user is logged in, i.e. someone isn't tring to write a review as someone else
         if (req.params.user != req.user.id) {
-            res.redirect('back');
+            res.redirect('/book/'+req.params.isbn);
         } else {
             if (db.Book.rateBook(req.params.isbn, req.params.user, req.body.rating, req.body.review, req, res)) {
                 req.flash('success', 'Successfully rated the book');

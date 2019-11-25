@@ -7,7 +7,7 @@ var isAdmin = require("../config/middleware/isAdmin");
 module.exports = function (app) {
     // default GET route, redirects to the home page, sorting by ISBN
     app.get("/", function (req, res) {
-        res.redirect("/home/isbn");
+        res.redirect("/home/isbn?page=0");
     });
     // GET route to show the user's catalogue
     app.get("/mycatalogue", isAuthenticated, function (req, res) {
@@ -47,6 +47,12 @@ module.exports = function (app) {
     });
     // GET route for the home page, sorted by :order
     app.get("/home/:order", function (req, res) {
+        var page = 0;
+        if (req.query.page) {
+            if (req.query.page >= 0)
+                page = Number(req.query.page);
+        }
+        var offset = page * 15;
         // searching ##################
         // Default to wildcard for search
         var where = {
@@ -67,9 +73,11 @@ module.exports = function (app) {
         // find the book
         db.Book.findAll({
             where,
+            offset: offset,
+            limit: 15,
             order: sequelize.col(req.params.order)
         }).then(books => { // show the books if any are found
-            res.render('index', { books: books, user: req.user, successMessage: req.flash('success'), errorMessage: req.flash('error') })
+            res.render('index', { books: books, user: req.user, page: page, order: req.params.order, successMessage: req.flash('success'), errorMessage: req.flash('error') })
         }).catch(function (err) { // otherwise show the not found page
             console.log(err);
             res.status(404).render('not-found', { user: req.user });

@@ -71,6 +71,27 @@
             <div class="col-sm-2"></div>
         </div>
         <% }); %>
+        <!-- <div class="row mb-4">
+                <div class="col-sm-5"></div>
+                <div class="col-sm-2"> -->
+
+                    <nav aria-label="Page navigation">
+                            <ul class="pagination pagination-lg justify-content-center">
+                              <li class="page-item"><a class="page-link" href="/home/<%= order %>?page=<%= page - 1 %>">Prev</a></li>
+                              <% if (Number(page) > 1) { %>
+                              <li class="page-item"><a class="page-link" href="/home/<%= order %>?page=<%= page - 2 %>"><%= page - 2 %></a></li>
+                              <% } %>
+                              <% if (Number(page) > 0) { %>
+                                <li class="page-item"><a class="page-link" href="/home/<%= order %>?page=<%= page - 1 %>"><%= page - 1 %></a></li>
+                                <% } %>
+                              <li class="page-item active"><span class="page-link"><%= page %> <span class="sr-only" >(current)</span> </span></li>
+                              <li class="page-item"><a class="page-link" href="/home/<%= order %>?page=<%= Number(page) + 1 %>"><%= Number(page) + 1 %></a></li>
+                              <li class="page-item"><a class="page-link" href="/home/<%= order %>?page=<%= Number(page) + 2 %>"><%= Number(page) + 2 %></a></li>
+                              <li class="page-item"><a class="page-link" href="/home/<%= order %>?page=<%= Number(page) + 1 %>">Next</a></li>
+                            </ul>
+                          </nav>
+                <!-- </div>
+                <div class="col-sm-5"></div> -->
     </div>
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
         integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"

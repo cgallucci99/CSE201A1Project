@@ -32,7 +32,7 @@ module.exports = function (app) {
         if (req.params.user != req.user.id) {
             res.redirect('/book/'+req.params.isbn);
         } else {
-            if (db.Book.rateBook(req.params.isbn, req.params.user, req.body.rating, req.body.review, req, res)) {
+            if (db.Book.rateBook(req.params.isbn, req.params.user, req.body.rating, req.body.review, req, res) === true) {
                 req.flash('success', 'Successfully rated the book');
             } else {
                 req.flash('error', 'Could not add review');

@@ -14,26 +14,34 @@
 
 <% include ./partials/header.ejs %>
 <div class="container mt-3">
+        <% var cover = "http://via.placeholder.com/200x320"; %>
+        <% if (book.cover) { %>
+            <% cover = book.cover; %>
+        <% } %>
     <% include ./partials/message.ejs %>
-    <h1><%= book.title %></h1>
-    <h3><%= book.author %> (<%= book.publicationYear %>)</h3>
-    <!-- TODO: map genres to string (currently an integer) -->
-    <p style="margin-bottom:0%"><strong>Genre(s):</strong> <% genres.forEach( function(genre) { %>
-        <%= genre.genreName %>,
-    <% }); %>
-    </p>
-    <p class="float-left"><strong>Rating: &nbsp;</strong> </p>
-        <!-- div element full of empty stars -->
-<div class='rating_bar'>
-    <!-- div element that contains full stars with percentage width, 
-    which represents rating -->
-    <div  class='rating' style='width:<%= book.rating / 5 * 100;%>%;'>
+    <div class="media">
+        <img class="book-cover rounded mr-3" src="<%= cover %>" alt="<%= book.title %> cover">
+        <div class="media-body">
+            <h1><%= book.title %></h1>
+            <h3><%= book.author %> (<%= book.publicationYear %>)</h3>
+            <p style="margin-bottom:0%"><strong>Genre(s):</strong> <% genres.forEach( function(genre) { %>
+                <%= genre.genreName %>,
+            <% }); %>
+            </p>
+            <p class="float-left"><strong>Rating: &nbsp;</strong> </p>
+                <!-- div element full of empty stars -->
+        <div class='rating_bar'>
+            <!-- div element that contains full stars with percentage width, 
+            which represents rating -->
+            <div  class='rating' style='width:<%= book.rating / 5 * 100;%>%;'>
+            </div>
+        </div>
+                <p>&nbsp; <%= book.rating %>/5 (based on <%= book.raters %> reviews)</p>
+            <p><%= book.synopsis %></p>
+        </div>
     </div>
-</div>
-        <p>&nbsp; <%= book.rating %>/5 (based on <%= book.raters %> reviews)</p>
-    <p><%= book.synopsis %></p>
     <% if(user) { %>
-    <div class="card">
+    <div class="card mt-3">
         <div class="card-body">
             <h3>Leave a reivew</h3>
             <form action="/api/rate/<%=book.isbn%>/<%=user.id%>" method="POST">
@@ -57,7 +65,7 @@
         </div>
     </div>
     <% } %>
-
+<hr>
     <% reviews.forEach( function (review) { %>
         <div class="card">
             <div class="card-body">

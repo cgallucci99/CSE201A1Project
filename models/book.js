@@ -78,6 +78,7 @@ module.exports = function(sequelize, DataTypes) {
             return true;
         } catch (err) {
             console.log('could not insert into reviews');
+            return false;
         }
     }
 

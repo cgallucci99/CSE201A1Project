@@ -67,3 +67,43 @@ fieldset, label { margin: 0; padding: 0; }
 .rating2 > input:checked ~ label:hover,
 .rating2 > label:hover ~ input:checked ~ label, /* lighten current selection */
 .rating2 > input:checked ~ label:hover ~ label { color: #FFED85;  } 
+
+.navbar-light {
+  background-color: #A9B7C0;
+}
+
+.book-card-title {
+  color: #596770;
+}
+
+.book-card-title:hover {
+  color: #495760;
+}
+
+.btn-primary {
+  background-color: #d8ebf6;
+  color: #435274;
+}
+
+.btn-default {
+  background-color: #C7D8C6;
+  color: #1E4814;
+}
+
+.navbar-nav .nav-item .nav-link {
+  color: #394750;
+}
+
+body {
+  background-color: #EFD9C1;
+}
+
+#footer {
+  background-color: #A9B7C0;
+}
+
+@media (max-width: 767.98px) {
+  .book-cover {
+    display: none;
+  }
+}

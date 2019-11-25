@@ -22,27 +22,27 @@
                 <div class="card-body">
                     <!-- <div class="row"> -->
                         <div>
-                            <strong>Add a Book</strong>
-                            <form action="/api/addBook" method="POST">
+                            <strong>Approve Book</strong>
+                            <form action="/api/approveBook/<%= book.isbn %>" method="POST">
                                 <div class="form-group">
                                     <input class="form-control" required type="text" name="title"
-                                        id="title" placeholder="Title" aria-label="Title">
+                                        id="title" value="<%= book.title %>" aria-label="Title">
                                 </div>
                                 <div class="form-group">
                                     <input class="form-control" required type="text" name="author"
-                                        placeholder="Author" aria-label="Author">
+                                        value="<%= book.author %>" aria-label="Author">
                                 </div>
                                 <div class="form-group">
                                     <input class="form-control" required type="text" name="publicationYear"
-                                        placeholder="Publication Year" aria-label="Publication Year">
+                                        value="<%= book.publicationYear %>" aria-label="Publication Year">
                                 </div>
                                 <div class="form-group">
                                     <textarea aria-label="Synopsis" class="form-control" required name="synopsis"
-                                        placeholder="Synopsis - 1000 character max" rows="3" maxlength="1000" id="synopsis"></textarea>
+                                        rows="3" maxlength="1000" id="synopsis"><%= book.synopsis %></textarea>
                                 </div>
                                 <div class="form-group">
                                     <select class="custom-select" id="genre1" aria-label="Genre 1">
-                                        <option selected>Choose a genre...</option>
+                                        <option selected value="<%= book.genre1 %>" ><%= book.genre1 %></option>
                                         <% genres.forEach( function(genre) { %>
                                             <option value="<%=genre.genreID%>" ><%=genre.genreName%></option>
                                         <% }); %>
@@ -50,7 +50,7 @@
                                 </div>
                                 <div class="form-group">
                                     <select class="custom-select" id="genre2" aria-label="Genre 2">
-                                        <option selected>Choose a genre...</option>
+                                        <option selected value="<%= book.genre2 %>"><%= book.genre2 %></option>
                                         <% genres.forEach( function(genre) { %>
                                             <option value="<%=genre.genreID%>" ><%=genre.genreName%></option>
                                         <% }); %>
@@ -58,15 +58,15 @@
                                 </div>
                                 <div class="form-group">
                                     <input class="form-control" required type="text" name="pageCount"
-                                        placeholder="Page Count" id="pageCount" aria-label="Page Count">
+                                        value="<%= book.pageCount %>" id="pageCount" aria-label="Page Count">
                                 </div>
                                 <div class="form-group">
                                     <input class="form-control" required type="text" name="isbn"
-                                        placeholder="ISBN" id="isbn" aria-label="ISBN">
+                                        value="<%= book.isbn %>" id="isbn" aria-label="ISBN">
                                 </div>
                                 <div class="form-group">
                                     <input class="form-control" type="text" name="cover"
-                                        placeholder="Cover Art Link" id="cover" aria-label="Cover Art Link">
+                                        value="<%= book.cover %>" id="cover" aria-label="Cover Art Link">
                                 </div>
                                 <button type="submit" class="btn btn-default" id="submit">Submit</button>
                             </form>
@@ -78,5 +78,4 @@
         <div class="col-lg-4 col-md-6"></div>
     </div>
 </div>
-
 <% include ./partials/footer.ejs %>

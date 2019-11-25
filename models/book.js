@@ -37,6 +37,10 @@ module.exports = function(sequelize, DataTypes) {
       },
       cover: {
           type: DataTypes.STRING
+      },
+      approved: {
+          type: DataTypes.BOOLEAN,
+          defaultValue: false
       }
     },
     {
@@ -74,6 +78,7 @@ module.exports = function(sequelize, DataTypes) {
             return true;
         } catch (err) {
             console.log('could not insert into reviews');
+            return false;
         }
     }
 

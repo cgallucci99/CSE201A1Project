@@ -4,5 +4,6 @@ module.exports = function (req, res, next) {
     if (req.user) {
         return next();
     }
+    req.flash('error','must be logged in');
     return res.redirect("back");
 };

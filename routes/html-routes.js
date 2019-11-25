@@ -2,11 +2,12 @@ var db = require('../models');
 var sequelize = require('sequelize');
 var op = sequelize.Op;
 var isAuthenticated = require("../config/middleware/isAuthenticated");
+var isAdmin = require("../config/middleware/isAdmin");
 
 module.exports = function (app) {
     // default GET route, redirects to the home page, sorting by ISBN
     app.get("/", function (req, res) {
-        res.redirect("/home/isbn");
+        res.redirect("/home/isbn?page=0");
     });
     // GET route to show the user's catalogue
     app.get("/mycatalogue", isAuthenticated, function (req, res) {
@@ -26,32 +27,39 @@ module.exports = function (app) {
         });
     });
     // GET route for showing a book's details
-    app.get("/book/:isbn", function (req, res) {
+    app.get("/book/:isbn", async function (req, res) {
         // find the book
-        db.Book.findOne({
-            where: {
-                isbn: req.params.isbn
-            }
-        }).then(function (book) { // if found, show its details page
-            // find the book's genres
-            db.sequelize.query("SELECT DISTINCT Genres.genreName FROM Genres, Books WHERE Genres.genreID = ? OR Genres.genreID = ?;", { replacements: [book.genre1, book.genre2], type: sequelize.QueryTypes.SELECT }).then(genres => {
-                res.render('book', { user: req.user, book: book, genres: genres, successMessage: req.flash('success'), errorMessage: req.flash('error') });
-            }).catch(function (error) { // if the genres can't be found, print an error message
-                req.flash('error', error.message);
-                res.redirect('back');
+        try {
+            var book = await db.Book.findOne({
+                where: {
+                    isbn: req.params.isbn
+                }
             });
-        }).catch(err => { // if the book is not found, show the not found page
+            // if found, show its details page
+            // find the book's genres
+            var genres = await db.sequelize.query("SELECT DISTINCT Genres.genreName FROM Genres, Books WHERE Genres.genreID = ? OR Genres.genreID = ?;", 
+                                    { replacements: [book.genre1, book.genre2], type: sequelize.QueryTypes.SELECT });
+            var reviews = await db.sequelize.query("SELECT r.*, u.firstName, u.lastName FROM Reviews r JOIN Users u ON u.id = r.id WHERE isbn = ?;", {replacements: [book.isbn], type: sequelize.QueryTypes.SELECT});
+            res.render('book', { user: req.user, book: book, genres: genres, reviews: reviews, successMessage: req.flash('success'), errorMessage: req.flash('error') });
+        } catch (err) { // if the book is not found, show the not found page
             res.status(404).render("not-found", { user: req.user });
-        });
+        }
     });
     // GET route for the home page, sorted by :order
     app.get("/home/:order", function (req, res) {
+        var page = 0;
+        if (req.query.page) {
+            if (req.query.page >= 0)
+                page = Number(req.query.page);
+        }
+        var offset = page * 15;
         // searching ##################
         // Default to wildcard for search
         var where = {
             title: {
                 [op.like]: '%'
-            }
+            },
+            approved: true
         };
 
         // If we are searching: filter by search
@@ -65,9 +73,11 @@ module.exports = function (app) {
         // find the book
         db.Book.findAll({
             where,
+            offset: offset,
+            limit: 15,
             order: sequelize.col(req.params.order)
         }).then(books => { // show the books if any are found
-            res.render('index', { books: books, user: req.user, successMessage: req.flash('success'), errorMessage: req.flash('error') })
+            res.render('index', { books: books, user: req.user, page: page, order: req.params.order, search: req.query.search, successMessage: req.flash('success'), errorMessage: req.flash('error') })
         }).catch(function (err) { // otherwise show the not found page
             console.log(err);
             res.status(404).render('not-found', { user: req.user });
@@ -104,4 +114,31 @@ module.exports = function (app) {
     app.get("/profile", isAuthenticated, function(req, res) {
         res.render("profile", { user: req.user, successMessage: req.flash('success'), errorMessage: req.flash('error') });
     });
+    // ####################### ADMIN ROUTES #########################
+
+    app.get('/unapprovedBooks', isAuthenticated, isAdmin, function (req, res) {
+        db.Book.findAll({
+            where: {
+                approved: false
+            }
+        }).then((books) => {
+            res.render('unapprovedBooks', { user: req.user, books: books, successMessage: req.flash('success'), errorMessage: req.flash('error') })
+        }).catch((err) => {
+            console.log('couldn\'t find books');
+            res.redirect('back');
+        })
+    });
+
+    app.get('/approveBook/:isbn', isAuthenticated, isAdmin, function (req, res) {
+        db.Book.findOne({
+            where: {
+                isbn: req.params.isbn
+            }
+        }).then((book) => {
+            db.sequelize.query("SELECT * FROM Genres", { type: sequelize.QueryTypes.SELECT }).then(results => {
+                res.render('approveBook', { user: req.user, book: book, successMessage: req.flash('success'), errorMessage: req.flash('error'), genres: results });
+            })
+        })
+    });
+
 }

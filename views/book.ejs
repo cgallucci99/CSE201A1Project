@@ -14,57 +14,71 @@
 
 <% include ./partials/header.ejs %>
 <div class="container mt-3">
+        <% var cover = "http://via.placeholder.com/200x320"; %>
+        <% if (book.cover) { %>
+            <% cover = book.cover; %>
+        <% } %>
     <% include ./partials/message.ejs %>
-    <h1><%= book.title %></h1>
-    <h3><%= book.author %> (<%= book.publicationYear %>)</h3>
-    <!-- TODO: map genres to string (currently an integer) -->
-    <p style="margin-bottom:0%"><strong>Genre(s):</strong> <% genres.forEach( function(genre) { %>
-        <%= genre.genreName %>,
-    <% }); %>
-    </p>
-    <p class="float-left"><strong>Rating: &nbsp;</strong> </p>
-        <!-- div element full of empty stars -->
-<div class='rating_bar'>
-    <!-- div element that contains full stars with percentage width, 
-    which represents rating -->
-    <div  class='rating' style='width:<%= book.rating / 5 * 100;%>%;'>
-    </div>
-</div>
-        <p>&nbsp; <%= book.rating %>/5 (based on <%= book.raters %> reviews)</p>
-    <p><%= book.synopsis %></p>
-    <% if(user) { %>
-    <div>
-        <form action="/api/rate/<%=book.isbn%>/<%=user.id%>" method="POST">
-            <fieldset class="rating2" name="rating">
-                <input type="radio" id="star5" name="rating" value="5" /><label class = "full" for="star5" title="5 stars"></label>
-                <input type="radio" id="star4half" name="rating" value="4.5" /><label class="half" for="star4half" title="4.5 stars"></label>
-                <input type="radio" id="star4" name="rating" value="4" /><label class = "full" for="star4" title="4 stars"></label>
-                <input type="radio" id="star3half" name="rating" value="3.5" /><label class="half" for="star3half" title="stars"></label>
-                <input type="radio" id="star3" name="rating" value="3" /><label class = "full" for="star3" title="3 stars"></label>
-                <input type="radio" id="star2half" name="rating" value="2.5" /><label class="half" for="star2half" title="2.5 stars"></label>
-                <input type="radio" id="star2" name="rating" value="2" /><label class = "full" for="star2" title="2 stars"></label>
-                <input type="radio" id="star1half" name="rating" value="1.5" /><label class="half" for="star1half" title="1.5 stars"></label>
-                <input type="radio" id="star1" name="rating" value="1" /><label class = "full" for="star1" title="1 star"></label>
-                <input type="radio" id="starhalf" name="rating" value="0.5" /><label class="half" for="starhalf" title="0.5 stars"></label>
-            </fieldset>
-            <div class="form-group">
-                <textarea name="review" id="review" cols="3" placeholder="Enter review..." class="form-control" aria-label="Enter Review"></textarea>
+    <div class="media">
+        <img class="book-cover rounded mr-3" src="<%= cover %>" alt="<%= book.title %> cover">
+        <div class="media-body">
+            <h1><%= book.title %></h1>
+            <h3><%= book.author %> (<%= book.publicationYear %>)</h3>
+            <p style="margin-bottom:0%"><strong>Genre(s):</strong> <% genres.forEach( function(genre) { %>
+                <%= genre.genreName %>,
+            <% }); %>
+            </p>
+            <p class="float-left"><strong>Rating: &nbsp;</strong> </p>
+                <!-- div element full of empty stars -->
+        <div class='rating_bar'>
+            <!-- div element that contains full stars with percentage width, 
+            which represents rating -->
+            <div  class='rating' style='width:<%= book.rating / 5 * 100;%>%;'>
             </div>
-            <button type="submit" class="btn btn-default" id="submit">Submit</button>
-        </form>
+        </div>
+                <p>&nbsp; <%= book.rating %>/5 (based on <%= book.raters %> reviews)</p>
+            <p><%= book.synopsis %></p>
+        </div>
+    </div>
+    <% if(user) { %>
+    <div class="card mt-3">
+        <div class="card-body">
+            <h3>Leave a reivew</h3>
+            <form action="/api/rate/<%=book.isbn%>/<%=user.id%>" method="POST">
+                <fieldset class="rating2" name="rating">
+                    <input type="radio" id="star5" name="rating" value="5" /><label class = "full" for="star5" title="5 stars"></label>
+                    <input type="radio" id="star4half" name="rating" value="4.5" /><label class="half" for="star4half" title="4.5 stars"></label>
+                    <input type="radio" id="star4" name="rating" value="4" /><label class = "full" for="star4" title="4 stars"></label>
+                    <input type="radio" id="star3half" name="rating" value="3.5" /><label class="half" for="star3half" title="stars"></label>
+                    <input type="radio" id="star3" name="rating" value="3" /><label class = "full" for="star3" title="3 stars"></label>
+                    <input type="radio" id="star2half" name="rating" value="2.5" /><label class="half" for="star2half" title="2.5 stars"></label>
+                    <input type="radio" id="star2" name="rating" value="2" /><label class = "full" for="star2" title="2 stars"></label>
+                    <input type="radio" id="star1half" name="rating" value="1.5" /><label class="half" for="star1half" title="1.5 stars"></label>
+                    <input type="radio" id="star1" name="rating" value="1" /><label class = "full" for="star1" title="1 star"></label>
+                    <input type="radio" id="starhalf" name="rating" value="0.5" /><label class="half" for="starhalf" title="0.5 stars"></label>
+                </fieldset>
+                <div class="form-group">
+                    <textarea name="review" id="review" cols="3" placeholder="Enter review..." class="form-control" aria-label="Enter Review"></textarea>
+                </div>
+                <button type="submit" class="btn btn-default" id="submit">Submit</button>
+            </form>
+        </div>
     </div>
     <% } %>
+<hr>
+    <% reviews.forEach( function (review) { %>
+        <div class="card">
+            <div class="card-body">
+                <p><strong><%= review.firstName + " " + review.lastName %></strong></p>
+                <div class="rating_bar">
+                    <div  class='rating' style='width:<%= review.rating / 5 * 100;%>%;'>
+                    </div>
+                </div>
+                <p>&nbsp;<%= review.rating %> / 5</p>
+                <p><%= review.review %></p>
+            </div>
+        </div>
+    <% }); %>
 </div>
 
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
-integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-crossorigin="anonymous"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
-integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-crossorigin="anonymous"></script>
-</body>
-
-</html>
+<% include ./partials/footer.ejs %>

@@ -1,5 +1,5 @@
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top">
+    <nav class="navbar navbar-expand-lg navbar-light sticky-top">
         <a class="navbar-brand" href="/">BookBot</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -17,39 +17,61 @@
                         </div>
                 </div>
             </form>
-            <% if (!user) { %> 
-            <a href="/login">
-                <button class="btn btn-default mr-3"  id="login">
-                    Login
-                </button>
-            </a>
-            <a href="/signup">
-                <button class="btn btn-default float-right" id="signup">
-                    Sign Up
-                </button>
-            </a>
-            <% } else { %>
-            <a href="/addBook">
-                <button class="btn btn-default mr-3" id="addBook">
-                    Suggest Book
-                </button>
-            </a>   
-            <a href="/mycatalogue">
-                <button class="btn btn-default mr-3" id="mycatalogue">
-                    My Catalogue
-                </button>
-            </a>
-            <a href="/profile">
-                <button class="btn btn-default mr-3" id="profile">
-                    Profile
-                </button>
-            </a>
-            <a href="/api/logout">
-                <button class="btn btn-default mr-3" id="logout">
-                    Logout
-                </button>
-            </a>
-            <% } %>
-        </div>
-    </nav>
-    
+            <ul class="navbar-nav">
+
+                <% if (!user) { %> 
+                    <li class="nav-item" id="login">
+                        <a class="nav-link" href="/login">
+                            
+                                Login
+                            
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/signup">
+                            
+                                Sign Up
+                    
+                        </a>
+                    </li>
+                    <% } else { %>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/addBook">
+                                
+                                    Suggest Book
+                        
+                            </a>   
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/mycatalogue">
+                                
+                                    My Catalogue
+                        
+                            </a>    
+                        </li>
+                        <li class="nav-item">
+                            <a href="/profile" class="nav-link" id="profile">
+                                Profile
+                            </a>
+                        </li>
+                        <li class="nav-item" id="logout">
+                            <a class="nav-link" href="/api/logout">
+                                
+                                    Logout
+                        
+                            </a>
+                        </li>
+                        <% if(user.admin == 1) {%>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/unapprovedBooks">
+                                    
+                                        Unapproved Books
+                            
+                                </a>
+                            </li>
+                            <% }%>
+                            <% } %>
+                        </div>
+                    </ul>
+                    </nav>
+                    

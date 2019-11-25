@@ -2,6 +2,8 @@ var db = require('../models');
 var passport = require('../config/passport');
 var Sequelize = require('sequelize');
 var isAuthenticated = require('../config/middleware/isAuthenticated');
+var isAdmin = require("../config/middleware/isAdmin");
+
 
 module.exports = function (app) {
     // POST route for adding a book
@@ -17,10 +19,10 @@ module.exports = function (app) {
             isbn: req.body.isbn,
             cover: req.body.cover
         }).then(function (book) {
-            req.flash('success', 'Successfully added "' + book.title + '" to database');
+            req.flash('success', 'Successfully suggested "' + book.title + '" to add to database');
             res.redirect('/');
         }).catch(function (error) {
-            req.flash('error', 'Error adding book: ' + error);
+            req.flash('error', 'Error suggesting book: ' + error);
             res.redirect('back');
         });
     });
@@ -28,9 +30,9 @@ module.exports = function (app) {
     app.post('/api/rate/:isbn/:user', isAuthenticated, function (req, res) {
         // make sure the correct user is logged in, i.e. someone isn't tring to write a review as someone else
         if (req.params.user != req.user.id) {
-            res.redirect('back');
+            res.redirect('/book/'+req.params.isbn);
         } else {
-            if (db.Book.rateBook(req.params.isbn, req.params.user, req.body.rating, req.body.review, req, res)) {
+            if (db.Book.rateBook(req.params.isbn, req.params.user, req.body.rating, req.body.review, req, res) === true) {
                 req.flash('success', 'Successfully rated the book');
             } else {
                 req.flash('error', 'Could not add review');
@@ -115,7 +117,7 @@ module.exports = function (app) {
     // POST route to add a book to a user's catalogue
     app.post("/api/addToCatalogue/:userid/:isbn", isAuthenticated, async function (req, res) {
         // make sure the correct user is logged in and adding to catalogue
-        if (req.params.user != req.user.id) {
+        if (req.params.userid != req.user.id) {
             res.redirect('back');
         } else {
             try {
@@ -142,7 +144,7 @@ module.exports = function (app) {
     // POST route for to remove a book from a user's catalogue
     app.post("/api/removeFromCatalogue/:userid/:isbn", isAuthenticated, async function (req, res) {
         // make sure the correct user is logged in and removing from catalogue
-        if (req.params.user != req.user.id) {
+        if (req.params.userid != req.user.id) {
             res.redirect('back');
         } else {
             try {
@@ -207,6 +209,31 @@ module.exports = function (app) {
         req.flash('success', 'Successfully logged out');
         res.redirect("/");
     });
+
+    // ########################### ADMIN ##################################
+    app.post('/api/approveBook/:isbn', isAuthenticated, isAdmin, function (req, res) {
+        db.Book.update({
+            title: req.body.title,
+            author: req.body.author,
+            publicationYear: req.body.publicationYear,
+            synopsis: req.body.synopsis,
+            genre1: req.body.genre1,
+            genre2: req.body.genre2,
+            pageCount: req.body.pageCount,
+            isbn: req.body.isbn,
+            cover: req.body.cover,
+            approved: true
+            },
+            {where: {isbn: req.params.isbn}
+        }).then(function (book) {
+            req.flash('success', 'Successfully approved book to be added to database');
+            res.redirect('/');
+        }).catch(function (error) {
+            req.flash('error', 'Error approving book: ' + error);
+            res.redirect('back');
+        });
+    });
+
     // GET route for anything other than what is specified in this file (api-routes.js) and html-routes.js
     app.get("*", function (req, res) {
         res.status(404).render("not-found", { user: req.user });

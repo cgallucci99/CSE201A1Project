@@ -101,4 +101,7 @@ module.exports = function (app) {
         })
     });
 
+    app.get("/profile", isAuthenticated, function(req, res) {
+        res.render("profile", { user: req.user, successMessage: req.flash('success'), errorMessage: req.flash('error') });
+    });
 }

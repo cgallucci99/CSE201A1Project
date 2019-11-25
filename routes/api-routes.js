@@ -48,6 +48,61 @@ module.exports = function (app) {
             console.log('error parsing query param');
         }
     });
+
+    app.post('/api/profile', passport.authenticate('local', {
+        // successRedirect: '/',
+        failureRedirect: '/profile',
+        successFlash: false,
+        failureFlash: true
+    }), async function (req, res) {
+        try {
+            // Update user in db
+            db.User.update(
+                {
+                    firstName: req.body.firstName
+                },
+                { 
+                    where: {
+                        email: req.user.email
+                    }
+                }
+            );
+            db.User.update(
+                {
+                    lastName: req.body.lastName
+                },
+                { 
+                    where: {
+                        email: req.user.email
+                    }
+                }
+            );
+            if (req.body.newPasswordCheck && req.body.password && req.body.password !== "") {
+                db.User.update(
+                    {
+                        password: req.body.new_password
+                    },
+                    { 
+                        where: {
+                            email: req.user.email
+                        }
+                    }
+                );
+
+                req.user.password = req.body.new_password;
+            }
+
+            // Update user model
+            req.user.firstName = req.body.firstName;
+            req.user.lastName = req.body.lastName;
+
+            req.flash('success', 'Successfully updated profile.');
+            res.redirect('/profile');
+        } catch {
+            req.flash('error', 'Could not update profile.');
+        }
+    });
+
     // POST route for login
     app.post("/api/login", passport.authenticate('local', {
         // successRedirect: '/',

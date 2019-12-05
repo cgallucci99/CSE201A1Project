@@ -27,12 +27,13 @@ module.exports = function (app) {
         });
     });
     // POST route for rating a book
-    app.post('/api/rate/:isbn/:user', isAuthenticated, function (req, res) {
+    app.post('/api/rate/:isbn/:user', isAuthenticated, async function (req, res) {
         // make sure the correct user is logged in, i.e. someone isn't tring to write a review as someone else
         if (req.params.user != req.user.id) {
             res.redirect('/book/'+req.params.isbn);
         } else {
-            if (db.Book.rateBook(req.params.isbn, req.params.user, req.body.rating, req.body.review, req, res) === true) {
+            var bool = await db.Book.rateBook(req.params.isbn, req.params.user, req.body.rating, req.body.review, req, res) ;
+            if (bool == true) {
                 req.flash('success', 'Successfully rated the book');
             } else {
                 req.flash('error', 'Could not add review');

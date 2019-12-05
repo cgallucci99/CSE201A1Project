@@ -141,4 +141,8 @@ module.exports = function (app) {
         })
     });
 
+    app.get('/faq', function(req, res) {
+        res.render("faq", { user: req.user, successMessage: req.flash('success'), errorMessage: req.flash('error') });
+    });
+
 }
